@@ -1,0 +1,17 @@
+[project]
+name = "admin"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Bibindum1",email = "aleksandrsluginov77@gmail.com"}
+]
+requires-python = ">=3.14"
+dependencies = [
+    "django (>=6.0.4,<7.0.0)",
+    "psycopg2-binary (>=2.9.12,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
