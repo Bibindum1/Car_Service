@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Автосервис — Главная</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#1f2430;
+      --muted:#667085;
+      --border:#e5e9f2;
+      --accent:#ff7a18;
+      --accent2:#ffb703;
+      --shadow:0 18px 50px rgba(31,36,48,.10);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,122,24,.12), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255,183,3,.10), transparent 24%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    }
+
+    .topbar{
+      height:56px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 22px;
+      background:rgba(255,255,255,.85);
+      backdrop-filter: blur(8px);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:16px;
+      font-weight:700;
+      color:#444;
+    }
+
+    .brand svg{
+      width:18px;
+      height:18px;
+      fill:#555;
+    }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .nav a{
+      text-decoration:none;
+      color:#525a6a;
+      font-size:14px;
+      padding:9px 12px;
+      border-radius:10px;
+      transition:.2s ease;
+    }
+
+    .nav a:hover{
+      background:#fff;
+      color:#222;
+    }
+
+    .hero{
+      max-width:1200px;
+      margin:0 auto;
+      padding:54px 20px 20px;
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .hero-card{
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--border);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:42px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      background:rgba(255,122,24,.10);
+      border:1px solid rgba(255,122,24,.16);
+      border-radius:999px;
+      color:#b85100;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:18px;
+    }
+
+    .eyebrow .dot{
+      width:9px;height:9px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 0 0 5px rgba(255,122,24,.10);
+    }
+
+    h1{
+      margin:0 0 14px;
+      font-size:clamp(34px, 4.8vw, 58px);
+      line-height:1.05;
+      letter-spacing:-1.5px;
+    }
+
+    .lead{
+      margin:0 0 26px;
+      font-size:17px;
+      line-height:1.7;
+      color:var(--muted);
+      max-width:560px;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:26px;
+    }
+
+    .btn{
+      height:48px;
+      padding:0 22px;
+      border-radius:14px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:15px;
+      font-weight:700;
+      border:1px solid transparent;
+    }
+
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 12px 24px rgba(255,122,24,.20);
+    }
+
+    .btn-secondary{
+      color:#2c3342;
+      background:#fff;
+      border-color:var(--border);
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:12px;
+    }
+
+    .stat{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .stat .num{
+      font-size:24px;
+      font-weight:700;
+      color:#222;
+      margin-bottom:6px;
+    }
+
+    .stat .txt{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .visual{
+      position:relative;
+      min-height:520px;
+      border-radius:28px;
+      background:
+        radial-gradient(circle at 40% 34%, rgba(255,255,255,.92), rgba(255,255,255,0) 54%),
+        linear-gradient(180deg, rgba(255,122,24,.16), rgba(255,183,3,.10));
+      border:1px solid rgba(229,233,242,.9);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .orb{
+      position:absolute;
+      border-radius:50%;
+    }
+
+    .orb.a{width:140px;height:140px;left:30px;top:36px;background:rgba(255,122,24,.14)}
+    .orb.b{width:82px;height:82px;right:42px;top:64px;background:rgba(255,183,3,.18)}
+    .orb.c{width:180px;height:180px;right:30px;bottom:44px;background:rgba(255,122,24,.10)}
+
+    .car{
+      position:absolute;
+      left:50%;
+      top:48%;
+      transform:translate(-50%,-52%);
+      width:min(420px, 84%);
+      height:220px;
+    }
+
+    .car .body{
+      position:absolute;
+      left:36px;
+      top:76px;
+      width:310px;
+      height:84px;
+      background:linear-gradient(180deg,#ffb703,#ff7a18);
+      clip-path:polygon(10% 0, 78% 0, 92% 14%, 100% 34%, 100% 70%, 92% 100%, 10% 100%, 0 70%, 0 26%);
+      border-radius:24px;
+      box-shadow:0 24px 36px rgba(255,122,24,.25);
+    }
+
+    .car .roof{
+      position:absolute;
+      left:112px;
+      top:38px;
+      width:140px;
+      height:54px;
+      background:linear-gradient(180deg,#ffd166,#ffb703);
+      clip-path:polygon(10% 100%, 0 50%, 18% 0, 82% 0, 100% 50%, 90% 100%);
+      border-radius:18px;
+    }
+
+    .car .window{
+      position:absolute;
+      left:124px;
+      top:47px;
+      width:116px;
+      height:30px;
+      background:rgba(255,255,255,.82);
+      clip-path:polygon(10% 100%, 0 50%, 14% 0, 86% 0, 100% 50%, 90% 100%);
+      border-radius:10px;
+    }
+
+    .car .light{
+      position:absolute;
+      right:58px;
+      top:92px;
+      width:16px;
+      height:10px;
+      border-radius:4px;
+      background:#fff5c8;
+      box-shadow:0 0 18px rgba(255,245,200,.9);
+    }
+
+    .car .wheel-left,
+    .car .wheel-right{
+      position:absolute;
+      bottom:16px;
+      width:58px;
+      height:58px;
+      border-radius:50%;
+      background:#232a38;
+      border:8px solid #4f596d;
+      box-shadow:inset 0 0 0 6px #d7deea;
+    }
+
+    .car .wheel-left{left:68px}
+    .car .wheel-right{right:58px}
+
+    .feature-row{
+      position:absolute;
+      left:22px;
+      right:22px;
+      bottom:20px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .feature{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(229,233,242,.95);
+      border-radius:16px;
+      padding:14px 12px;
+      box-shadow:0 10px 20px rgba(31,36,48,.07);
+    }
+
+    .feature .title{
+      font-size:14px;
+      font-weight:700;
+      margin:0 0 5px;
+    }
+
+    .feature .sub{
+      font-size:12px;
+      line-height:1.45;
+      color:var(--muted);
+      margin:0;
+    }
+
+    .section{
+      max-width:1200px;
+      margin:0 auto;
+      padding:18px 20px 54px;
+    }
+
+    .section h2{
+      margin:0 0 18px;
+      font-size:26px;
+      line-height:1.2;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:20px;
+      box-shadow:0 12px 32px rgba(31,36,48,.06);
+      min-height:170px;
+    }
+
+    .card .icon{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(255,122,24,.14), rgba(255,183,3,.14));
+      display:grid;
+      place-items:center;
+      margin-bottom:14px;
+      color:#d86100;
+    }
+
+    .card .icon svg{width:22px;height:22px}
+    .card h3{
+      margin:0 0 10px;
+      font-size:18px;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
+      .visual{min-height:440px}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media (max-width: 640px){
+      .topbar{height:auto; padding:14px 16px; flex-direction:column; align-items:flex-start; gap:10px}
+      .hero-card{padding:24px}
+      .stats{grid-template-columns:1fr}
+      .feature-row{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .visual{min-height:360px}
+      .car{transform:translate(-50%,-50%) scale(.78)}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 24 24"><path d="M5.5 11.2 7 7.8c.4-1 1.3-1.6 2.4-1.6h5.2c1 0 2 .6 2.4 1.6l1.5 3.4h1.4c.9 0 1.6.7 1.6 1.6v1.1c0 .6-.4 1-.9 1.1l-.8.2v1.4c0 .9-.7 1.6-1.6 1.6h-.7c-.9 0-1.6-.7-1.6-1.6v-1H8.1v1c0 .9-.7 1.6-1.6 1.6h-.7c-.9 0-1.6-.7-1.6-1.6v-1.4l-.8-.2c-.5-.1-.9-.5-.9-1.1v-1.1c0-.9.7-1.6 1.6-1.6h1Zm2.2-2.1-.8 2.1h10.2l-.9-2.1c-.2-.5-.7-.8-1.2-.8H9c-.5 0-1 .3-1.3.8Z"/></svg>
+      <span>Автомастерская Админ</span>
+    </div>
+    <nav class="nav">
+      <a href="/">Главная</a>
+      <a href="/services/">Услуги</a>
+      <a href="/orders/">Заявки</a>
+      <a href="/employees/">Сотрудники</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-card">
+        <div class="eyebrow"><span class="dot"></span> Быстрый автосервис</div>
+        <h1>Ремонт, диагностика и обслуживание без лишней суеты</h1>
+        <p class="lead">
+          Мы собрали всё в одном месте: услуги, заявки, сотрудники и управление работой автосервиса.
+          Удобный старт для клиента и понятная админка для персонала.
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="/services/">Посмотреть услуги</a>
+          <a class="btn btn-secondary" href="/orders/">Оставить заявку</a>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="num">12+</div>
+            <div class="txt">популярных услуг в каталоге</div>
+          </div>
+          <div class="stat">
+            <div class="num">24/7</div>
+            <div class="txt">приём заявок через сайт</div>
+          </div>
+          <div class="stat">
+            <div class="num">100%</div>
+            <div class="txt">контроль статусов и записей</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="visual">
+        <div class="orb a"></div>
+        <div class="orb b"></div>
+        <div class="orb c"></div>
+
+        <div class="car" aria-hidden="true">
+          <div class="roof"></div>
+          <div class="window"></div>
+          <div class="body"></div>
+          <div class="light"></div>
+          <div class="wheel-left"></div>
+          <div class="wheel-right"></div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature">
+            <div class="title">Диагностика</div>
+            <p class="sub">Быстро выявляем проблему и предлагаем решение.</p>
+          </div>
+          <div class="feature">
+            <div class="title">Ремонт</div>
+            <p class="sub">Плановые и срочные работы по узлам автомобиля.</p>
+          </div>
+          <div class="feature">
+            <div class="title">Запись</div>
+            <p class="sub">Удобный приём заявок и контроль очереди.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Наши услуги</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M21 7.5a5.5 5.5 0 0 1-7.3 5.2L7.7 18.7a2.2 2.2 0 0 1-3.1-3.1l6-6A5.5 5.5 0 1 1 21 7.5Zm-5.5-3.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/></svg></div>
+          <h3>Диагностика</h3>
+          <p>Проверка двигателя, тормозов, подвески и других систем.</p>
+        </article>
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 6H4V4h16v2Zm0 4H4v2h16v-2Zm0 6H4v2h16v-2Z"/></svg></div>
+          <h3>ТО и обслуживание</h3>
+          <p>Замена масла, фильтров, свечей и расходников.</p>
+        </article>
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2 3 7v10l9 5 9-5V7l-9-5Zm0 2.3 6.7 3.7L12 11.7 5.3 8 12 4.3Z"/></svg></div>
+          <h3>Запчасти</h3>
+          <p>Подбор и замена необходимых деталей по заявке.</p>
+        </article>
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a5 5 0 0 0-5 5v2H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-2V8a5 5 0 0 0-5-5Zm-3 7V8a3 3 0 0 1 6 0v2H9Z"/></svg></div>
+          <h3>Безопасность</h3>
+          <p>Контроль качества, прозрачность работ и фиксация статусов.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

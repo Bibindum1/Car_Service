@@ -1,5 +1,5 @@
 """
-WSGI config for CarService project.
+WSGI templates for CarService project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Добавить услугу</title>
+    <style>
+        :root {
+            --page: #f7f7f7;
+            --border: #d9d9d9;
+            --border2: #e8e8e8;
+            --text: #222;
+            --muted: #666;
+            --sidebar: #fbfbfb;
+            --card: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html, body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--page);
+            color: var(--text);
+        }
+
+        .app {
+            min-height: 100vh;
+            background: #fff;
+            border: 1px solid #ececec;
+        }
+
+        .topbar {
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px 0 14px;
+            border-bottom: 1px solid #e7e7e7;
+            background: #fff;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .brand svg {
+            width: 16px;
+            height: 16px;
+            fill: #5e5e5e
+        }
+
+        .avatar {
+            width: 23px;
+            height: 23px;
+            border-radius: 50%;
+            background: #9aa0aa;
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 13px;
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 45px)
+        }
+
+        .sidebar {
+            width: 190px;
+            background: var(--sidebar);
+            border-right: 1px solid #e5e5e5;
+            padding-top: 4px;
+        }
+
+        .nav {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+
+        .nav li {
+            height: 31px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 14px;
+            color: #444;
+            font-size: 13px;
+        }
+
+        .nav li .ico {
+            width: 13px;
+            height: 13px;
+            color: #777
+        }
+
+        .nav li.section-gap {
+            height: 18px;
+            padding: 0
+        }
+
+        .main {
+            flex: 1;
+            padding: 14px 18px 22px 23px
+        }
+
+        .content {
+            border: 1px solid #ededed;
+            background: #fff;
+            min-height: 100%;
+            padding: 12px 0 22px;
+        }
+
+        h1 {
+            margin: 0 0 17px 27px;
+            font-size: 23px;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .divider {
+            height: 1px;
+            background: #ededed;
+            margin: 0 27px 22px;
+        }
+
+        .formwrap {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 27px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns:180px 1fr;
+            gap: 14px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        label {
+            font-size: 13px;
+            color: #444;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            height: 30px;
+            border: 1px solid #d7d7d7;
+            background: #fff;
+            outline: none;
+            font-size: 13px;
+            padding: 0 10px;
+            color: #333;
+        }
+
+        textarea {
+            height: 90px;
+            padding: 9px 10px;
+            resize: none;
+        }
+
+        .actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 18px;
+            margin-left: 194px;
+        }
+
+        .btn {
+            height: 27px;
+            padding: 0 14px;
+            border: 1px solid #bcbcbc;
+            background: #f8f8f8;
+            color: #555;
+            font-size: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                flex-direction: column
+            }
+
+            .sidebar {
+                width: 100%
+            }
+
+            .row {
+                grid-template-columns:1fr
+            }
+
+            .actions {
+                margin-left: 0
+            }
+
+            .formwrap {
+                max-width: 100%
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="topbar">
+        <div class="brand">
+            <svg viewBox="0 0 24 24">
+                <path d="M5.5 11.2 7 7.8c.4-1 1.3-1.6 2.4-1.6h5.2c1 0 2 .6 2.4 1.6l1.5 3.4h1.4c.9 0 1.6.7 1.6 1.6v1.1c0 .6-.4 1-.9 1.1l-.8.2v1.4c0 .9-.7 1.6-1.6 1.6h-.7c-.9 0-1.6-.7-1.6-1.6v-1H8.1v1c0 .9-.7 1.6-1.6 1.6h-.7c-.9 0-1.6-.7-1.6-1.6v-1.4l-.8-.2c-.5-.1-.9-.5-.9-1.1v-1.1c0-.9.7-1.6 1.6-1.6h1Zm2.2-2.1-.8 2.1h10.2l-.9-2.1c-.2-.5-.7-.8-1.2-.8H9c-.5 0-1 .3-1.3.8Z"/>
+            </svg>
+            <span>Автомастерская Админ</span>
+        </div>
+        <div class="avatar">8</div>
+    </div>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <ul class="nav">
+                <li>
+                    <svg class="ico" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/>
+                    </svg>
+                    Личный кабинет
+                </li>
+                <li>
+                    <svg class="ico" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-7 18a7 7 0 0 1 14 0H5Z"/>
+                    </svg>
+                    Сотрудники
+                </li>
+                <li>
+                    <svg class="ico" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M5 7h14v3H5V7Zm0 5h14v3H5v-3Zm0 5h14v3H5v-3Z"/>
+                    </svg>
+                    Услуги
+                </li>
+                <li>
+                    <svg class="ico" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2 3 7l9 5 9-5-9-5Zm0 7L3 4v10l9 5 9-5V4l-9 5Z"/>
+                    </svg>
+                    Заявки
+                </li>
+                <li class="section-gap"></li>
+                <li>
+                    <svg class="ico" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2 4.5 6v12L12 22l7.5-4V6L12 2Z"/>
+                    </svg>
+                    Настройки
+                </li>
+                <li>
+                    <svg class="ico" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                              d="M10 17v-2h5V9h-5V7l-5 5 5 5Zm8-14h-7v2h7v12h-7v2h7a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/>
+                    </svg>
+                    Выйти
+                </li>
+            </ul>
+        </aside>
+
+        <form class="main" method="post">
+            <div class="content">
+                <h1>Добавить услугу</h1>
+                <div class="divider"></div>
+                <div>
+                    <div class="formwrap">
+                        <div class="row">
+                            <label>Название услуги</label>
+                            <input type="text"/>
+                        </div>
+                        <div class="row">
+                            <label>Цена</label>
+                            <input type="text"/>
+                        </div>
+                        <div class="row">
+                            <label>Длительность</label>
+                            <input type="text"/>
+                        </div>
+                        <div class="row">
+                            <label>Категория</label>
+                            <select>
+                                <option>Выберите категорию</option>
+                                <option>ТО</option>
+                                <option>Диагностика</option>
+                                <option>Ремонт</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <label>Описание</label>
+                            <textarea></textarea>
+                        </div>
+
+                        <div class="actions">
+                            <button class="btn" type="submit">Сохранить</button>
+                            <button class="btn">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
