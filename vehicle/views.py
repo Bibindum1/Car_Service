@@ -9,7 +9,17 @@ from .forms import VehicleForm
 
 def vehicle_list(request):
     vehicles = Vehicle.objects.all()
-    return render(request, "vehicle/vehicle.html", {"shop:vehicles": vehicles})
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        vehicles = vehicles.filter(name__icontains=search_query)
+
+    context = {
+        'vehicles': vehicles,
+        'search_query': search_query
+    }
+
+    return render(request, "vehicle/vehicle.html", context)
 
 
 def vehicle_detail(request, pk):

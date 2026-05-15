@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог услуг{% endblock %}
+
+{% block content %}
+
+    <section class="card section">
+
+        <h2>Каталог услуг</h2>
+
+        <!-- ================= FILTER ================= -->
+        <form method="get" class="services-filter">
+
+            <input type="text"
+                   name="q"
+                   value="{{ q }}"
+                   placeholder="Поиск услуги..."
+                   class="input"
+                   style="
+                    flex:1;
+                    min-width:220px;
+                    padding:12px 14px;
+                    border-radius:10px;
+                    border:1px solid rgba(255,255,255,0.15);
+                    background:#0b1224;
+                    color:#fff;
+                    outline:none;
+               ">>
+
+            <select name="sort" class="input">
+
+                <option value="">Сортировка</option>
+
+                <option value="price_asc" {% if sort == "price_asc" %}selected{% endif %}>
+                    Цена ↑
+                </option>
+
+                <option value="price_desc" {% if sort == "price_desc" %}selected{% endif %}>
+                    Цена ↓
+                </option>
+
+                <option value="popular" {% if sort == "popular" %}selected{% endif %}>
+                    Популярные
+                </option>
+
+            </select>
+
+            <button type="submit" class="btn primary">
+                Применить
+            </button>
+
+        </form>
+
+
+        <!-- ================= GRID ================= -->
+        <div class="services-grid">
+
+            {% for service in services %}
+
+                <div class="service-card">
+
+                    <div class="service-title">
+                        {{ service.description }}
+                    </div>
+
+                    <div class="service-text">
+                        {{ service.description|truncatewords:15 }}
+                    </div>
+
+                    <div class="service-price">
+                        Цена: <b>{{ service.initial_price }} ₽</b>
+                    </div>
+
+                    <div class="service-popularity">
+                        Заказов: {{ service.popularity }}
+                    </div>
+
+                    <a href="{% url 'shop:service_detail' service.pk %}" class="btn secondary">
+                        Подробнее
+                    </a>
+
+                </div>
+
+            {% empty %}
+
+                <p class="empty-text">
+                    Услуги не найдены
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    <style>
+        .services-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .service-card {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 16px;
+            transition: 0.2s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .service-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .service-text {
+            opacity: 0.7;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .service-price {
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .service-popularity {
+            font-size: 12px;
+            opacity: 0.6;
+            margin-bottom: 12px;
+        }
+
+        .empty-text {
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+
+{% endblock %}

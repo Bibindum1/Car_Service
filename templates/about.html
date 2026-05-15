@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}О автосервисе «Code Garage»{% endblock %}
+
+{% block content %}
+  <section class="card section">
+    <h2>О нас</h2>
+    <p style="color:var(--muted);margin:0 0 18px;">
+      «Code Garage» — это современный автосервис в Краснодаре, специализирующийся на обслуживании и ремонте автомобилей любых марок.
+      Мы работаем с 2020 года и за это время накопили большой опыт в ремонте двигателей, подвески, электрики и ТО.
+    </p>
+
+    <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+      <div class="card" style="padding:20px;">
+        <h3 style="margin:0 0 10px;">Команда мастеров</h3>
+        <p style="color:var(--muted);margin:0;line-height:1.6;">
+          В нашем сервисе работают опытные специалисты, которые проходят регулярное обучение и используют только современное оборудование.
+        </p>
+      </div>
+      <div class="card" style="padding:20px;">
+        <h3 style="margin:0 0 10px;">Качество и гарантии</h3>
+        <p style="color:var(--muted);margin:0;line-height:1.6;">
+          Мы используем сертифицированные запчасти и даём гарантию на все виды работ, чтобы вы могли быть уверены в безопасности и долговечности ремонта.
+        </p>
+      </div>
+      <div class="card" style="padding:20px;">
+        <h3 style="margin:0 0 10px;">Современное оборудование</h3>
+        <p style="color:var(--muted);margin:0;line-height:1.6;">
+          У нас в цехе есть современное оборудование для диагностики, развала‑схождения, работы с тормозной системой и кондиционером.
+        </p>
+      </div>
+      <div class="card" style="padding:20px;">
+        <h3 style="margin:0 0 10px;">Клиенты в центре внимания</h3>
+        <p style="color:var(--muted);margin:0;line-height:1.6;">
+          Мы ценим прозрачность и уважение к клиенту: перед началом работ всегда согласуем объём и стоимость.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;text-align:center;">
+      <a href="{% url 'shop:order_list' %}" class="btn primary" style="width:max-content;">
+        Записаться на приём
+      </a>
+      <a href="{% url 'shop:services_list' %}" class="btn secondary" style="margin-left:12px;">
+        Посмотреть услуги
+      </a>
+    </div>
+  </section>
+{% endblock %}

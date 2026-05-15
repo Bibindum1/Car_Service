@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Цены и прейскурант автосервиса{% endblock %}
+
+{% block content %}
+  <section class="card section">
+    <h2>Цены и прейскурант</h2>
+    <p style="color:var(--muted);margin:0 0 18px;">
+      Ниже приведены ориентировочные цены на популярные услуги. Точный расчёт зависит от состояния автомобиля и выбранного пакета работ.
+    </p>
+
+    <div class="card" style="margin-top:12px;padding:18px;">
+      <table style="
+        width:100%;border-collapse:collapse;color:var(--text);
+      ">
+        <thead>
+          <tr style="border-bottom:1px solid var(--line);font-size:14px;">
+            <th style="padding:12px 10px;text-align:left;">Услуга</th>
+            <th style="padding:12px 10px;text-align:right;">Цена</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:12px 10px;">Диагностика двигателя</td>
+            <td style="padding:12px 10px;text-align:right;">от 1 500 ₽</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:12px 10px;">Замена масла и фильтров</td>
+            <td style="padding:12px 10px;text-align:right;">от 2 200 ₽</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:12px 10px;">Развал‑схождение</td>
+            <td style="padding:12px 10px;text-align:right;">от 2 000 ₽</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:12px 10px;">Ремонт подвески (1 сторону)</td>
+            <td style="padding:12px 10px;text-align:right;">от 5 000 ₽</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:12px 10px;">Замена тормозных колодок</td>
+            <td style="padding:12px 10px;text-align:right;">от 2 800 ₽</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="padding:12px 10px;">Полная диагностика ходовой</td>
+            <td style="padding:12px 10px;text-align:right;">от 2 500 ₽</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:18px;color:var(--muted);font-size:14px;">
+      <p>Уточнить точную стоимость и записаться на ремонт можно через форму заявки:</p>
+      <a href="{% url 'shop:order_list' %}" class="btn primary" style="margin-top:12px;width:max-content;">
+        Оставить заявку
+      </a>
+    </div>
+  </section>
+{% endblock %}

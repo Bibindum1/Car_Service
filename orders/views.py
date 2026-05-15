@@ -1,29 +1,56 @@
-from django import views
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.urls import path
 
 from .models import Service, Order
-from .forms import  ServiceForm, OrderForm
+from .forms import OrderForm, ServiceForm
+
+from django.db.models import Count
+
 
 def service_list(request):
-    services = (
-        Service.objects.select_related("customer", "vehicle")
-        .order_by("-date")
+    q = request.GET.get("q", "")
+    sort = request.GET.get("sort", "")
+
+    services = Service.objects.annotate(
+        popularity=Count("orders", distinct=True)
     )
-    return render(request, "", {"shop:services": services})
+
+    if q:
+        services = services.filter(description__icontains=q)
+
+    if sort == "price_asc":
+        services = services.order_by("initial_price")
+
+    elif sort == "price_desc":
+        services = services.order_by("-initial_price")
+
+    elif sort == "popular":
+        services = services.order_by("-popularity", "-service_id")
+
+    else:
+        services = services.order_by("-service_id")
+
+    return render(request, "services/services.html", {
+        "services": services,
+        "q": q,
+        "sort": sort,
+    })
+
 
 def service_detail(request, pk):
     service = get_object_or_404(
-        Service.objects.select_related("shop:customer", "vehicle"),
+        Service.objects.select_related("vehicle"),
         pk=pk,
     )
     return render(
         request,
-        "",
-        {"shop:service": service},
+        "services/services_detail.html",
+        {"service": service},
     )
+
 
 def service_create(request):
     if request.method == "POST":
@@ -34,11 +61,12 @@ def service_create(request):
             return redirect("shop:service_list")
     else:
         form = ServiceForm()
-    return render(request, "", {"form": form})
+    return render(request, "services/services_create.html", {"form": form})
+
 
 def service_update(request, pk):
     service = get_object_or_404(
-        Service.objects.select_related("shop:customer", "vehicle"),
+        Service.objects.select_related("vehicle"),
         pk=pk,
     )
     if request.method == "POST":
@@ -49,11 +77,12 @@ def service_update(request, pk):
             return redirect("shop:service_detail", pk=pk)
     else:
         form = ServiceForm(instance=service)
-    return render(request, "", {"form": form})
+    return render(request, "", {"service": service})
+
 
 def service_delete(request, pk):
     service = get_object_or_404(
-        Service.objects.select_related("customer", "vehicle"),
+        Service.objects.select_related("vehicle"),
         pk=pk,
     )
     if request.method == "POST":
@@ -62,42 +91,45 @@ def service_delete(request, pk):
         return redirect("shop:service_list")
     return render(request, "", {"service": service})
 
-def order_list(request):
-    orders = (
-        Order.objects.select_related("customer", "vehicle")
-        .order_by("-date")
-    )
-    return render(request, "orders/orders.html", {"shop:orders": orders})
 
+def order_list(request):
+    orders = Order.objects.all().order_by("-order_id")
+
+    search_query = request.GET.get("search", "")
+
+    if search_query:
+        orders = orders.filter(name__icontains=search_query)
+
+    return render(request, "orders/orders.html", {
+        "orders": orders,
+        "search_query": search_query
+    })
+
+
+@login_required
 def order_create(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
+
         if form.is_valid():
-            form.save()
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()
+
             messages.success(request, "Заказ создан.")
             return redirect("shop:order_list")
+
     else:
         form = OrderForm()
-    return render(request, "orders/create_order.html", {"form": form})
 
-def order_update(request, pk):
-    order = get_object_or_404(
-        Order.objects.select_related("customer", "vehicle"),
-        pk=pk,
-    )
-    if request.method == "POST":
-        form = OrderForm(request.POST, instance=order)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Данные заказа обновлены.")
-            return redirect("shop:order_detail", pk=pk)
-    else:
-        form = OrderForm(instance=order)
-    return render(request, "orders/update_order.html", {"form": form})
+    return render(request, "orders/orders.html", {
+        "form": form
+    })
+
 
 def order_delete(request, pk):
     order = get_object_or_404(
-        Order.objects.select_related("customer", "vehicle"),
+        Order.objects.select_related("vehicle"),
         pk=pk,
     )
     if request.method == "POST":
@@ -106,5 +138,18 @@ def order_delete(request, pk):
         return redirect("shop:order_list")
     return render(request, "orders/delete_order.html", {"order": order})
 
+
 def home(request):
     return render(request, "index.html")
+
+
+def about_list(request):
+    return render(request, 'about.html')
+
+
+def reviews(request):
+    return render(request, 'reviews.html')
+
+
+def prices(request):
+    return render(request, 'prices.html')

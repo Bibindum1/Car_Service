@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,9 +16,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'image_uploader_widget',
+    'applications',
+    'vehicle',
     'orders',
-    'user',
-    'vehicle'
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -30,7 +33,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'CarService.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -47,12 +50,12 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CarService.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'CarService',
+        'NAME': 'config',
         'USER': 'postgres',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
@@ -84,3 +87,8 @@ LANGUAGE_CODE = 'ru-ru'
 USE_TZ = True
 
 STATIC_URL = 'static/'
+
+AUTH_USER_MODEL = "users.CustomUser"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

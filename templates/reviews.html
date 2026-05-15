@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Отзывы клиентов автосервиса{% endblock %}
+
+{% block content %}
+  <section class="card section">
+    <h2>Отзывы клиентов</h2>
+    <p style="color:var(--muted);margin:0 0 18px;">
+      Благодарим наших клиентов за доверие и обратную связь. Ниже — часть реальных отзывов о работе автосервиса «Code Garage».
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+      {% for review in reviews %}
+        <div class="card" style="padding:18px;">
+          <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;color:var(--accent2);">
+            <span>⭐</span>
+            <span style="color:var(--muted);font-size:13px;">{{ review.rating }} из 5</span>
+          </div>
+          <div style="margin-bottom:8px;font-size:16px;">{{ review.name }}</div>
+          <div style="color:var(--muted);margin:0;">
+            {{ review.comment|truncatewords:30 }}
+          </div>
+          {% if review.comment|length > 30 %}
+            <div style="margin-top:4px;">
+              <a href="#" style="color:var(--accent2);font-size:13px;text-decoration:underline;">
+                читать полностью
+              </a>
+            </div>
+          {% endif %}
+          <div style="margin-top:12px;font-size:12px;color:var(--muted);">
+            Дата: {{ review.created_at|date:"d.m.Y" }}
+          </div>
+        </div>
+      {% empty %}
+        <p style="color:var(--muted);grid-column:1 / -1;">
+          Отзывы ещё не добавлены. Будьте первым, кто оставит обратную связь!
+        </p>
+      {% endfor %}
+    </div>
+
+    <div style="margin-top:24px;text-align:center;">
+      <a href="{% url 'shop:order_list' %}" class="btn primary" style="width:max-content;">
+        Оставить свой отзыв
+      </a>
+      <a href="{% url 'shop:services_list' %}" class="btn secondary" style="margin-left:12px;">
+        Посмотреть услуги
+      </a>
+    </div>
+  </section>
+{% endblock %}
