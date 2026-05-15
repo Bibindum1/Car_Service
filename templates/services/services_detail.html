@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ service.name }} – автосервис «Code Garage»{% endblock %}
+
+{% block content %}
+  <section class="card section">
+    <h2>{{ service.name }}</h2>
+
+    <div style="color:var(--muted);margin:0 0 16px;">{{ service.description }}</div>
+
+    <div style="margin-top:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="card" style="padding:16px;">
+        <div style="font-size:14px;color:var(--muted);">Категория</div>
+        <div style="font-size:16px;">{{ service.category }}</div>
+      </div>
+      <div class="card" style="padding:16px;">
+        <div style="font-size:14px;color:var(--muted);">Средняя длительность</div>
+        <div style="font-size:16px;">{{ service.duration }} минут</div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;color:var(--accent2);font-size:18px;">
+      Цена: <strong>{{ service.price }} ₽</strong>
+    </div>
+
+    <div style="margin-top:18px;">
+      <a href="{% url 'shop:order_list' %}?service_id={{ service.id }}" class="btn primary">
+        Записаться на эту услугу
+      </a>
+      <a href="{% url 'shop:services_list' %}" class="btn secondary" style="margin-left:12px;">
+        Вернуться к услугам
+      </a>
+    </div>
+  </section>
+{% endblock %}
