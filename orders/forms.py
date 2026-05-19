@@ -17,7 +17,7 @@ class OrderForm(forms.ModelForm):
             "name",
             "phone",
             "email",
-            "car_model",
+            "vehicle",
             "description",
             "service"
         ]

@@ -3,13 +3,24 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    # Main
     path("", include("orders.urls")),
+
+    # Apps
+    path("vehicle/", include("vehicle.urls")),
+    path("users/", include("users.urls")),
+    path("applications/", include("applications.urls")),
+
+    # Django auth
     path("accounts/", include("django.contrib.auth.urls")),
-    path("", include("users.urls")),
-    path("", include("applications.urls")),
+
 ]
+
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )

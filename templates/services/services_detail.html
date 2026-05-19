@@ -1,35 +1,78 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}{{ service.name }} – автосервис «Code Garage»{% endblock %}
+{% block title %}
+Услуга
+{% endblock %}
 
 {% block content %}
-  <section class="card section">
-    <h2>{{ service.name }}</h2>
 
-    <div style="color:var(--muted);margin:0 0 16px;">{{ service.description }}</div>
+<style>
 
-    <div style="margin-top:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-      <div class="card" style="padding:16px;">
-        <div style="font-size:14px;color:var(--muted);">Категория</div>
-        <div style="font-size:16px;">{{ service.category }}</div>
-      </div>
-      <div class="card" style="padding:16px;">
-        <div style="font-size:14px;color:var(--muted);">Средняя длительность</div>
-        <div style="font-size:16px;">{{ service.duration }} минут</div>
-      </div>
+.detail{
+    background:#121212;
+    border-radius:34px;
+    overflow:hidden;
+    border:1px solid #222;
+}
+
+.detail img{
+    width:100%;
+    height:450px;
+    object-fit:cover;
+}
+
+.detail-content{
+    padding:40px;
+}
+
+.detail-content h1{
+    font-size:54px;
+    margin-bottom:20px;
+}
+
+.detail-content p{
+    color:#b0b0b0;
+    line-height:1.9;
+    font-size:18px;
+}
+
+.price{
+    margin-top:30px;
+    color:#ff6600;
+    font-size:44px;
+    font-weight:900;
+}
+
+</style>
+
+<div class="detail">
+
+    {% if service.image %}
+    <img src="{{ service.image.url }}">
+    {% endif %}
+
+    <div class="detail-content">
+
+        <h1>
+            {{ service.course_name }}
+        </h1>
+
+        <p>
+            {{ service.description }}
+        </p>
+
+        <div class="price">
+            {{ service.initial_price }}€
+        </div>
+
+        <br>
+
+        <a href="{% url 'create_application' %}" class="btn">
+            Заказать услугу
+        </a>
+
     </div>
 
-    <div style="margin-top:12px;color:var(--accent2);font-size:18px;">
-      Цена: <strong>{{ service.price }} ₽</strong>
-    </div>
+</div>
 
-    <div style="margin-top:18px;">
-      <a href="{% url 'shop:order_list' %}?service_id={{ service.id }}" class="btn primary">
-        Записаться на эту услугу
-      </a>
-      <a href="{% url 'shop:services_list' %}" class="btn secondary" style="margin-left:12px;">
-        Вернуться к услугам
-      </a>
-    </div>
-  </section>
 {% endblock %}

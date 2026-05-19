@@ -76,11 +76,18 @@ class RegisterForm(UserCreationForm):
 
         return full_name
 
-
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
 
-        if CustomUser.objects.filter(r'^\+?[0-9\-\(\) ]+$', phone=phone).exists():
+        if not re.fullmatch(r'^\+?[0-9\-\(\) ]+$', phone):
+            raise ValidationError('Введите корректный номер телефона')
+
+        digits = re.sub(r'\D', '', phone)
+
+        if len(digits) < 11:
+            raise ValidationError('Телефон слишком короткий')
+
+        if CustomUser.objects.filter(phone=phone).exists():
             raise ValidationError('Пользователь с таким телефоном уже существует')
 
         return phone

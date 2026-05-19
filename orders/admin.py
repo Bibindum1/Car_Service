@@ -65,7 +65,7 @@ class OrderAdmin(admin.ModelAdmin):
         "name",
         "phone",
         "email",
-        "car_model",
+        "vehicle",
         "service",
         "status",
     )
@@ -74,7 +74,7 @@ class OrderAdmin(admin.ModelAdmin):
         "name",
         "phone",
         "email",
-        "car_model",
+        "vehicle",
     )
 
     list_filter = (
@@ -92,7 +92,7 @@ class OrderAdmin(admin.ModelAdmin):
                 "name",
                 "phone",
                 "email",
-                "car_model",
+                "vehicle",
                 "description",
                 "service",
                 "status",

@@ -7,12 +7,12 @@ from vehicle.models import Vehicle
 class Service(models.Model):
     service_id = models.AutoField(primary_key=True)
     user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="services", default=1)
-    vehicle = models.ForeignKey("vehicle.Vehicle", on_delete=models.CASCADE, related_name="services")
+    vehicle = models.ForeignKey("vehicle.Vehicle", on_delete=models.CASCADE, related_name="services", blank=True)
     date = models.DateField()
     description = models.TextField()
     initial_price = models.DecimalField(
         max_digits=10,
-        validators=[MinValueValidator(1)],
+        validators=[MinValueValidator(500.00)],
         help_text="Минимальная цена - 500 ₽",
         decimal_places=2,
     )
@@ -44,9 +44,23 @@ class Order(models.Model):
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
     email = models.EmailField()
+    STATUS_CHOICES = [
+        ('new', 'Новая'),
+        ('accepted', 'Принята'),
+        ('in_progress', 'В работе'),
+        ('waiting_parts', 'Ожидание деталей'),
+        ('done', 'Готово'),
+        ('cancelled', 'Отменено'),
+    ]
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='new'
+    )
 
 
-    vehicle = models.ForeignKey(Vehicle)
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.PROTECT)
     description = models.TextField()
 
     service = models.ForeignKey(
@@ -57,20 +71,13 @@ class Order(models.Model):
         related_name="orders"
     )
 
-    STATUS_CHOICES = [
-        ('new', 'Новая'),
-        ('accepted', 'Принята'),
-        ('in_progress', 'В работе'),
-        ('waiting_parts', 'Ожидание деталей'),
-        ('done', 'Готово'),
-        ('cancelled', 'Отменено'),
-    ]
 
-    created_at = models.DateTimeField(auto_now_add=True)
+
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Заказы"
         verbose_name = "Заказ"
 
     def __str__(self):
-        return f"{self.name} - {self.car_model}"
+        return f"{self.name} - {self.vehicle}"

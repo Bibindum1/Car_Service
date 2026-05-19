@@ -51,6 +51,10 @@ def service_create(request):
         form = ServiceForm()
     return render(request, "services/services_create.html", {"form": form})
 
+def service_detail(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    return render(request, "orders/service_detail.html", {"service": service})
+
 def service_delete(request, pk):
     service = get_object_or_404(
         Service.objects.select_related("vehicle"),

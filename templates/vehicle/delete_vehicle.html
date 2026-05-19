@@ -1,10 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}
+Удаление авто
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.delete-box{
+    max-width:650px;
+    margin:auto;
+
+    background:#121212;
+    border-radius:32px;
+
+    padding:45px;
+
+    border:1px solid #222;
+
+    text-align:center;
+}
+
+.delete-box h1{
+    margin-bottom:20px;
+}
+
+.delete-box p{
+    color:#b0b0b0;
+    margin-bottom:30px;
+}
+
+</style>
+
+<div class="delete-box">
+
+    <h1>
+        Удалить автомобиль?
+    </h1>
+
+    <p>
+        {{ vehicle.brand }} {{ vehicle.model }}
+    </p>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <button class="btn" type="submit">
+            Удалить
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

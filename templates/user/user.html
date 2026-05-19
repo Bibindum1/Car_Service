@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}
+Пользователь
+{% endblock %}
+
+{% block content %}
+
+<div class="profile">
+
+    <h1 class="section-title">
+        {{ user.username }}
+    </h1>
+
+    <p style="color:#b0b0b0;font-size:18px;">
+        Email: {{ user.email }}
+    </p>
+
+</div>
+
+{% endblock %}

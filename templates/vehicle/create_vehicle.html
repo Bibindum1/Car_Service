@@ -1,10 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}
+Добавить авто
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.form-box{
+    background:#121212;
+    border-radius:34px;
+    padding:45px;
+    border:1px solid #222;
+    max-width:800px;
+}
+
+.form-group{
+    margin-bottom:24px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:18px;
+
+    background:#1b1b1b;
+    border:1px solid #2a2a2a;
+
+    border-radius:16px;
+    color:white;
+}
+
+</style>
+
+<div class="form-box">
+
+<h1 class="section-title">
+    Добавить автомобиль
+</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {% for field in form %}
+
+    <div class="form-group">
+
+        {{ field.label_tag }}
+
+        {{ field }}
+
+    </div>
+
+    {% endfor %}
+
+    <button class="btn" type="submit">
+        Сохранить
+    </button>
+
+</form>
+
+</div>
+
+{% endblock %}

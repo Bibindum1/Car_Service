@@ -1,58 +1,73 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Цены и прейскурант автосервиса{% endblock %}
+{% block title %}
+Цены
+{% endblock %}
 
 {% block content %}
-  <section class="card section">
-    <h2>Цены и прейскурант</h2>
-    <p style="color:var(--muted);margin:0 0 18px;">
-      Ниже приведены ориентировочные цены на популярные услуги. Точный расчёт зависит от состояния автомобиля и выбранного пакета работ.
-    </p>
 
-    <div class="card" style="margin-top:12px;padding:18px;">
-      <table style="
-        width:100%;border-collapse:collapse;color:var(--text);
-      ">
-        <thead>
-          <tr style="border-bottom:1px solid var(--line);font-size:14px;">
-            <th style="padding:12px 10px;text-align:left;">Услуга</th>
-            <th style="padding:12px 10px;text-align:right;">Цена</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid var(--line);">
-            <td style="padding:12px 10px;">Диагностика двигателя</td>
-            <td style="padding:12px 10px;text-align:right;">от 1 500 ₽</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--line);">
-            <td style="padding:12px 10px;">Замена масла и фильтров</td>
-            <td style="padding:12px 10px;text-align:right;">от 2 200 ₽</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--line);">
-            <td style="padding:12px 10px;">Развал‑схождение</td>
-            <td style="padding:12px 10px;text-align:right;">от 2 000 ₽</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--line);">
-            <td style="padding:12px 10px;">Ремонт подвески (1 сторону)</td>
-            <td style="padding:12px 10px;text-align:right;">от 5 000 ₽</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--line);">
-            <td style="padding:12px 10px;">Замена тормозных колодок</td>
-            <td style="padding:12px 10px;text-align:right;">от 2 800 ₽</td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--line);">
-            <td style="padding:12px 10px;">Полная диагностика ходовой</td>
-            <td style="padding:12px 10px;text-align:right;">от 2 500 ₽</td>
-          </tr>
-        </tbody>
-      </table>
+<style>
+
+.price-table{
+    background:#121212;
+    border-radius:30px;
+    overflow:hidden;
+    border:1px solid #222;
+}
+
+.price-row{
+    display:flex;
+    justify-content:space-between;
+    padding:24px 30px;
+    border-bottom:1px solid #222;
+}
+
+.price-row:last-child{
+    border-bottom:none;
+}
+
+.price-row h3{
+    font-size:20px;
+}
+
+.price-row strong{
+    color:#ff6600;
+    font-size:24px;
+}
+
+</style>
+
+<h1 class="section-title">
+    Прайс-лист
+</h1>
+
+<div class="price-table">
+
+    <div class="price-row">
+        <h3>Замена масла</h3>
+        <strong>50€</strong>
     </div>
 
-    <div style="margin-top:18px;color:var(--muted);font-size:14px;">
-      <p>Уточнить точную стоимость и записаться на ремонт можно через форму заявки:</p>
-      <a href="{% url 'shop:order_list' %}" class="btn primary" style="margin-top:12px;width:max-content;">
-        Оставить заявку
-      </a>
+    <div class="price-row">
+        <h3>Компьютерная диагностика</h3>
+        <strong>80€</strong>
     </div>
-  </section>
+
+    <div class="price-row">
+        <h3>Замена тормозных колодок</h3>
+        <strong>120€</strong>
+    </div>
+
+    <div class="price-row">
+        <h3>Полировка кузова</h3>
+        <strong>250€</strong>
+    </div>
+
+    <div class="price-row">
+        <h3>Ремонт двигателя</h3>
+        <strong>900€</strong>
+    </div>
+
+</div>
+
 {% endblock %}

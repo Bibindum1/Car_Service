@@ -5,19 +5,27 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from .forms import RegisterForm, LoginForm
 
 
-def safe_redirect(request, url, default_name='home'):
-    if not url:
+def safe_redirect(request, url, default_name='orders:home'):
+
+    if not url or url == 'None':
         return redirect(default_name)
-    allowed = url_has_allowed_host_and_scheme(url, allowed_hosts={request.get_host()},
-                                              require_https=request.is_secure())
+
+    allowed = url_has_allowed_host_and_scheme(
+        url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure()
+    )
+
     if allowed:
         return redirect(url)
+
     return redirect(default_name)
+
 
 
 def register_view(request):
     if request.user.is_authenticated:
-        return redirect('shop:home')
+        return redirect('orders:home')
     next_url = request.GET.get('next') or request.POST.get('next')
 
     if request.method == 'POST':
@@ -25,7 +33,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return safe_redirect(request, next_url, default_name='home')
+            return safe_redirect(request, next_url, default_name='orders:home')
     else:
         form = RegisterForm()
 
@@ -37,7 +45,7 @@ def register_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('orders:home')
     next_url = request.GET.get('next') or request.POST.get('next')
 
     if request.method == 'POST':
@@ -45,7 +53,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return safe_redirect(request, next_url, default_name='home')
+            return safe_redirect(request, next_url, default_name='orders:home')
     else:
         form = LoginForm(request)
 

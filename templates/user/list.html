@@ -1,20 +1,81 @@
 {% extends 'base.html' %}
 
-{% block title %}Мои заявки{% endblock %}
+{% block title %}
+Пользователи
+{% endblock %}
 
 {% block content %}
-<h2>Мои заявки</h2>
 
-<div class="applications-list">
-    {% for application in applications %}
-        <div class="application-card">
-            <h3>{{ application.course_name }}</h3>
-            <p>Дата начала: {{ application.start_date }}</p>
-            <p>Способ оплаты: {{ application.get_payment_method_display }}</p>
-            <p>Статус: {{ application.get_status_display }}</p>
-        </div>
-    {% empty %}
-        <p>У вас пока нет заявок</p>
-    {% endfor %}
+<style>
+
+.user-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
+
+.user-card{
+    background:#121212;
+    border-radius:28px;
+    padding:30px;
+    border:1px solid #222;
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:#ff6600;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:34px;
+    font-weight:900;
+
+    margin-bottom:20px;
+}
+
+.user-card p{
+    color:#b0b0b0;
+    margin-top:10px;
+}
+
+</style>
+
+<h1 class="section-title">
+    Пользователи
+</h1>
+
+<div class="user-grid">
+
+{% for user in users %}
+
+<div class="user-card">
+
+    <div class="avatar">
+        {{ user.username|first|upper }}
+    </div>
+
+    <h2>
+        {{ user.username }}
+    </h2>
+
+    <p>
+        {{ user.email }}
+    </p>
+
+    <br>
+
+    <a href="{% url 'users:detail_user' user.pk %}" class="btn">
+        Профиль
+    </a>
+
 </div>
+
+{% endfor %}
+
+</div>
+
 {% endblock %}

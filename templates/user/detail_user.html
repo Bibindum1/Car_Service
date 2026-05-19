@@ -1,10 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}
+Профиль
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.profile{
+    background:#121212;
+    border-radius:34px;
+    padding:45px;
+    border:1px solid #222;
+}
+
+.profile-top{
+    display:flex;
+    align-items:center;
+    gap:30px;
+
+    margin-bottom:40px;
+}
+
+.avatar{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    background:#ff6600;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:54px;
+    font-weight:900;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+
+    padding:18px 0;
+
+    border-bottom:1px solid #222;
+}
+
+</style>
+
+<div class="profile">
+
+    <div class="profile-top">
+
+        <div class="avatar">
+            {{ user.username|first|upper }}
+        </div>
+
+        <div>
+
+            <h1>
+                {{ user.username }}
+            </h1>
+
+            <p style="color:#b0b0b0;">
+                Клиент автосервиса
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-row">
+        <span>Email</span>
+        <strong>{{ user.email }}</strong>
+    </div>
+
+    <div class="info-row">
+        <span>Дата регистрации</span>
+        <strong>{{ user.date_joined }}</strong>
+    </div>
+
+</div>
+
+{% endblock %}
