@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import F
+from django.db.models import F, Q
 from django.urls import path
 
 from .models import Service, Order
@@ -19,7 +19,8 @@ def service_list(request):
     )
 
     if q:
-        services = services.filter(description__icontains=q)
+        (Q(description__icontains=q) |
+        Q(vehicle__brand__icontains=q))
 
     if sort == "price_asc":
         services = services.order_by("initial_price")
@@ -39,19 +40,6 @@ def service_list(request):
         "sort": sort,
     })
 
-
-def service_detail(request, pk):
-    service = get_object_or_404(
-        Service.objects.select_related("vehicle"),
-        pk=pk,
-    )
-    return render(
-        request,
-        "services/services_detail.html",
-        {"service": service},
-    )
-
-
 def service_create(request):
     if request.method == "POST":
         form = ServiceForm(request.POST)
@@ -62,23 +50,6 @@ def service_create(request):
     else:
         form = ServiceForm()
     return render(request, "services/services_create.html", {"form": form})
-
-
-def service_update(request, pk):
-    service = get_object_or_404(
-        Service.objects.select_related("vehicle"),
-        pk=pk,
-    )
-    if request.method == "POST":
-        form = ServiceForm(request.POST, instance=service)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Данные услуги обновлены.")
-            return redirect("shop:service_detail", pk=pk)
-    else:
-        form = ServiceForm(instance=service)
-    return render(request, "", {"service": service})
-
 
 def service_delete(request, pk):
     service = get_object_or_404(
@@ -98,7 +69,9 @@ def order_list(request):
     search_query = request.GET.get("search", "")
 
     if search_query:
-        orders = orders.filter(name__icontains=search_query)
+        (Q(name__icontains=search_query) |
+         (Q(phone__icontains=search_query) |
+         Q(car_model__icontains=search_query)))
 
     return render(request, "orders/orders.html", {
         "orders": orders,

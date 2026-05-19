@@ -1,8 +1,7 @@
-from django import views
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from django.db.models import F
-from django.urls import path
+from django.db.models import Q
+
 
 from .models import Vehicle
 from .forms import VehicleForm
@@ -12,7 +11,11 @@ def vehicle_list(request):
     search_query = request.GET.get('search', '')
 
     if search_query:
-        vehicles = vehicles.filter(name__icontains=search_query)
+        vehicles = vehicles.filter(
+            Q(brand__icontains=search_query) |
+            Q(model__icontains=search_query) |
+            Q(vin__icontains=search_query)
+        )
 
     context = {
         'vehicles': vehicles,
@@ -27,7 +30,7 @@ def vehicle_detail(request, pk):
     return render(
         request,
         "vehicle/detail_vehicle.html",
-        {"shop:vehicle": vehicle},
+        {"vehicle": vehicle},
     )
 
 def vehicle_create(request):
@@ -36,7 +39,7 @@ def vehicle_create(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Автомобиль создан.")
-            return redirect("shop:vehicle_list")
+            return redirect("vehicle_list")
     else:
         form = VehicleForm()
     return render(request, "vehicle/create_vehicle.html", {"form": form})
@@ -48,7 +51,7 @@ def vehicle_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Данные автомобиля обновлены.")
-            return redirect("shop:vehicle_detail", pk=pk)
+            return redirect("vehicle_detail", pk=pk)
     else:
         form = VehicleForm(instance=vehicle)
     return render(request, "vehicle/update_vehicle.html", {"form": form})

@@ -46,7 +46,7 @@ class Order(models.Model):
     email = models.EmailField()
 
 
-    car_model = models.CharField(max_length=100)
+    vehicle = models.ForeignKey(Vehicle)
     description = models.TextField()
 
     service = models.ForeignKey(
@@ -57,7 +57,16 @@ class Order(models.Model):
         related_name="orders"
     )
 
-    status = models.BooleanField(default=False)
+    STATUS_CHOICES = [
+        ('new', 'Новая'),
+        ('accepted', 'Принята'),
+        ('in_progress', 'В работе'),
+        ('waiting_parts', 'Ожидание деталей'),
+        ('done', 'Готово'),
+        ('cancelled', 'Отменено'),
+    ]
+
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Заказы"

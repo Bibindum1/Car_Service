@@ -80,7 +80,7 @@ class RegisterForm(UserCreationForm):
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
 
-        if CustomUser.objects.filter(phone=phone).exists():
+        if CustomUser.objects.filter(r'^\+?[0-9\-\(\) ]+$', phone=phone).exists():
             raise ValidationError('Пользователь с таким телефоном уже существует')
 
         return phone
@@ -96,7 +96,7 @@ class RegisterForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.first_name = self.cleaned_data.get('full_name')
+        user.full_name = self.cleaned_data.get('full_name')
         user.email = self.cleaned_data.get('email')
         user.phone = self.cleaned_data.get('phone')
 
