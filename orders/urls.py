@@ -9,7 +9,7 @@ urlpatterns = [
     # Service
     path("services/", views.service_list, name="services_list"),
     path("services/<int:pk>/", views.service_detail, name="service_detail"),
-
+    path("orders/create/", views.order_create, name="order_create"),
     # Order
     path("orders/", views.order_list, name="order_list"),
 

@@ -1,152 +1,346 @@
-from random import randint, choice
+import os
+import random
 from decimal import Decimal
+from random import choice, randint
 
 from faker import Faker
 
-from django.core.management.base import BaseCommand
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.files import File
+from django.core.management.base import BaseCommand
 
-from vehicle.models import Vehicle
 from orders.models import Order, Service
+from vehicle.models import Vehicle
 
 fake = Faker("ru_RU")
 
-BRANDS_AND_MODELS = {
-    "Toyota": ["Camry", "Corolla", "RAV4"],
-    "BMW": ["X5", "M3", "320i"],
-    "Audi": ["A4", "A6", "Q7"],
-    "Mercedes": ["C200", "E220", "GLE"],
-    "Honda": ["Civic", "Accord", "CR-V"],
-    "Ford": ["Focus", "Mustang", "Explorer"],
+User = get_user_model()
+
+# ---------------------------------------------------
+# НАСТРОЙКИ
+# ---------------------------------------------------
+
+CAR_BRANDS = {
+    "BMW": ["M5", "X5", "320i", "M3"],
+    "Mercedes": ["E63", "C200", "GLE", "CLS"],
+    "Audi": ["A6", "RS7", "Q8", "A4"],
+    "Toyota": ["Camry", "Corolla", "Land Cruiser"],
+    "Honda": ["Accord", "Civic", "CR-V"],
+    "Volkswagen": ["Golf", "Passat", "Touareg"],
+    "Ford": ["Mustang", "Focus", "Explorer"],
+    "Porsche": ["911", "Panamera", "Cayenne"],
 }
 
-COLORS = ["Черный", "Белый", "Серый", "Синий", "Красный", "Зеленый"]
+COLORS = [
+    "Черный",
+    "Белый",
+    "Серый",
+    "Красный",
+    "Синий",
+    "Зеленый",
+    "Оранжевый",
+]
 
 SERVICES = [
     "Замена масла",
-    "Диагностика двигателя",
-    "Ремонт подвески",
-    "Шиномонтаж",
-    "Замена тормозных колодок",
-    "Покраска кузова",
     "Компьютерная диагностика",
+    "Ремонт двигателя",
+    "Замена тормозных колодок",
+    "Шиномонтаж",
+    "Полировка кузова",
+    "Покраска кузова",
     "Замена аккумулятора",
+    "Ремонт подвески",
+    "Ремонт коробки передач",
+]
+
+ORDER_STATUSES = [
+    "new",
+    "accepted",
+    "in_progress",
+    "waiting_parts",
+    "done",
+    "cancelled",
+]
+
+PAYMENT_METHODS = [
+    "cash",
+    "card",
 ]
 
 
 class Command(BaseCommand):
-    help = "Заполнение базы тестовыми данными"
+
+    help = "Полное заполнение базы автосервиса"
 
     def add_arguments(self, parser):
-        parser.add_argument("--orders", type=int, default=20)
-        parser.add_argument("--vehicles", type=int, default=20)
-        parser.add_argument("--services", type=int, default=20)
+
+        parser.add_argument(
+            "--users",
+            type=int,
+            default=15
+        )
+
+        parser.add_argument(
+            "--vehicles",
+            type=int,
+            default=30
+        )
+
+        parser.add_argument(
+            "--services",
+            type=int,
+            default=50
+        )
+
+        parser.add_argument(
+            "--orders",
+            type=int,
+            default=60
+        )
+
+        parser.add_argument(
+            "--applications",
+            type=int,
+            default=40
+        )
 
     def handle(self, *args, **kwargs):
 
-        User = get_user_model()
-        user = User.objects.first()
-
-        if not user:
-            user = User.objects.create_user(
-                username="seed_user",
-                password="123456"
-            )
-
-        orders_count = kwargs["orders"]
+        users_count = kwargs["users"]
         vehicles_count = kwargs["vehicles"]
         services_count = kwargs["services"]
+        orders_count = kwargs["orders"]
+        applications_count = kwargs["applications"]
 
-        # ----------------------------
+        self.stdout.write(
+            self.style.WARNING("Удаление старых данных...")
+        )
+
+        Order.objects.all().delete()
+        Service.objects.all().delete()
+        Vehicle.objects.all().delete()
+
+        # ---------------------------------------------------
+        # USERS
+        # ---------------------------------------------------
+
+        self.stdout.write(
+            self.style.WARNING("Создание пользователей...")
+        )
+
+        users = []
+
+        for _ in range(users_count):
+
+            username = fake.unique.user_name()
+
+            user = User.objects.create_user(
+                username=username,
+
+                email=fake.unique.email(),
+
+                password="123456",
+
+                full_name=fake.name(),
+
+                phone=fake.phone_number()[:16]
+            )
+
+            users.append(user)
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Пользователей создано: {len(users)}"
+            )
+        )
+
+        # ---------------------------------------------------
         # VEHICLES
-        # ----------------------------
-        self.stdout.write("Создание автомобилей...")
+        # ---------------------------------------------------
+
+        self.stdout.write(
+            self.style.WARNING("Создание автомобилей...")
+        )
 
         vehicles = []
 
         for _ in range(vehicles_count):
-            brand = choice(list(BRANDS_AND_MODELS.keys()))
-            model = choice(BRANDS_AND_MODELS[brand])
+
+            brand = choice(list(CAR_BRANDS.keys()))
+
+            model = choice(CAR_BRANDS[brand])
+
+            owner = choice(users)
 
             vehicle = Vehicle.objects.create(
-                vin=fake.unique.bothify("???########????").upper(),
-                plate_number=fake.unique.bothify("?###??##").upper(),
+
+                vin=fake.unique.bothify(
+                    text="????????#########"
+                ).upper()[:17],
+
+                plate_number=fake.unique.bothify(
+                    text="?###??##"
+                ).upper(),
+
                 brand=brand,
+
                 model=model,
+
                 year=randint(2000, 2025),
-                mileage=randint(0, 300000),
+
+                mileage=randint(1000, 350000),
+
                 color=choice(COLORS),
+
+                owner=owner
             )
 
             vehicles.append(vehicle)
 
         self.stdout.write(
-            self.style.SUCCESS(f"Создано автомобилей: {len(vehicles)}")
+            self.style.SUCCESS(
+                f"Автомобилей создано: {len(vehicles)}"
+            )
         )
 
-        # ----------------------------
-        # ORDERS
-        # ----------------------------
-        self.stdout.write("Создание заказов...")
+        # ---------------------------------------------------
+        # MEDIA
+        # ---------------------------------------------------
 
-        created_orders = 0
+        media_seed_path = os.path.join(
+            settings.BASE_DIR,
+            "media_seed"
+        )
 
-        for _ in range(orders_count):
+        images = []
 
-            car = choice(vehicles)
+        if os.path.exists(media_seed_path):
 
-            Order.objects.create(
-                name=fake.name(),
-                phone=fake.phone_number(),
-                email=fake.email(),
-                car_model=car.brand + " " + car.model,
-                description=fake.text(),
-                service=None,
-                status=False,
-                user=user,
-            )
+            for file in os.listdir(media_seed_path):
 
-            created_orders += 1
+                if file.lower().endswith((
+                        ".jpg",
+                        ".jpeg",
+                        ".png",
+                        ".webp"
+                )):
+                    images.append(
+                        os.path.join(
+                            media_seed_path,
+                            file
+                        )
+                    )
+
+        # ---------------------------------------------------
+        # SERVICES
+        # ---------------------------------------------------
 
         self.stdout.write(
-            self.style.SUCCESS(f"Создано заказов: {created_orders}")
+            self.style.WARNING("Создание услуг...")
         )
 
-        # ----------------------------
-        # SERVICES
-        # ----------------------------
-        self.stdout.write("Создание услуг...")
-
-        created_services = 0
+        services = []
 
         for _ in range(services_count):
 
             vehicle = choice(vehicles)
 
-            service_date = fake.date_between(
-                start_date="-1y",
-                end_date="today"
+            service = Service.objects.create(
+
+                user=vehicle.owner,
+
+                vehicle=vehicle,
+
+                description=fake.text(
+                    max_nb_chars=400
+                ),
+
+                initial_price=Decimal(
+                    randint(50, 3000)
+                ),
+
+                date=fake.date_between(
+                    start_date="-1y",
+                    end_date="today"
+                )
             )
 
-            if Service.objects.filter(
-                vehicle=vehicle,
-                date=service_date
-            ).exists():
-                continue
+            # image
 
-            Service.objects.create(
-                vehicle=vehicle,
-                date=service_date,
-                description=choice(SERVICES),
-                initial_price=Decimal(randint(500, 50000)),
-            )
+            if images:
 
-            created_services += 1
+                random_image = random.choice(images)
+
+                with open(random_image, "rb") as image_file:
+
+                    service.image.save(
+                        os.path.basename(random_image),
+
+                        File(image_file),
+
+                        save=True
+                    )
+
+            services.append(service)
 
         self.stdout.write(
-            self.style.SUCCESS(f"Создано услуг: {created_services}")
+            self.style.SUCCESS(
+                f"Услуг создано: {len(services)}"
+            )
         )
 
+        # ---------------------------------------------------
+        # ORDERS
+        # ---------------------------------------------------
+
         self.stdout.write(
-            self.style.SUCCESS("Заполнение завершено")
+            self.style.WARNING("Создание заказов...")
+        )
+
+        orders = []
+
+        for _ in range(orders_count):
+
+            vehicle = choice(vehicles)
+
+            service = choice(services)
+
+            order = Order.objects.create(
+
+                user=vehicle.owner,
+
+                vehicle=vehicle,
+
+                service=service,
+
+                name=vehicle.owner.full_name,
+
+                phone=vehicle.owner.phone,
+
+                email=vehicle.owner.email,
+
+                description=fake.text(
+                    max_nb_chars=250
+                ),
+
+                status=choice(
+                    ORDER_STATUSES
+                )
+            )
+
+            orders.append(order)
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Заказов создано: {len(orders)}"
+            )
+        )
+
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                "База успешно заполнена"
+            )
         )

@@ -17,7 +17,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'image_uploader_widget',
-    'applications',
     'vehicle',
     'orders',
     'users',

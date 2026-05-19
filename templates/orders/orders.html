@@ -1,86 +1,132 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Заказы
+    Заказы
 {% endblock %}
 
 {% block content %}
 
-<style>
+    <style>
 
-.order-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-    gap:25px;
-}
+        .order-grid {
+            display: grid;
+            grid-template-columns:repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+        }
 
-.order-card{
-    background:#121212;
-    border-radius:28px;
-    padding:30px;
-    border:1px solid #222;
-    transition:.35s;
-}
+        .order-card {
+            background: #121212;
+            border-radius: 28px;
+            padding: 30px;
+            border: 1px solid #222;
+            transition: .35s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-.order-card:hover{
-    border-color:#ff6600;
-    transform:translateY(-5px);
-}
+        .order-card:hover {
+            border-color: #ff6600;
+            transform: translateY(-5px);
+        }
 
-.order-card h2{
-    margin-bottom:15px;
-}
+        .order-card h2 {
+            margin-bottom: 15px;
+        }
 
-.order-card p{
-    color:#b0b0b0;
-    line-height:1.7;
-}
+        .order-card p {
+            color: #b0b0b0;
+            line-height: 1.7;
+        }
 
-.status{
-    display:inline-block;
-    margin-top:20px;
-    background:#ff6600;
-    color:white;
-    padding:10px 18px;
-    border-radius:999px;
-    font-weight:700;
-}
+        .status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
 
-</style>
+            width: fit-content;
 
-<h1 class="section-title">
-    Заказы клиентов
-</h1>
+            padding: 10px 18px;
 
-<div class="order-grid">
+            border-radius: 999px;
 
-{% for order in orders %}
+            font-size: 14px;
+            font-weight: 700;
 
-<div class="order-card">
+            margin-top: 20px;
+        }
 
-    <h2>
-        {{ order.vehicle.brand }}
-        {{ order.vehicle.model }}
-    </h2>
+        .status.new {
+            background: #3a3a3a;
+        }
 
-    <p>
-        {{ order.problem_description }}
-    </p>
+        .status.accepted {
+            background: #1d4ed8;
+        }
 
-    <br>
+        .status.diagnostic {
+            background: #7c3aed;
+        }
 
-    <strong>
-        {{ order.user.full_name }}
-    </strong>
+        .status.in_progress {
+            background: #ff6600;
+        }
 
-    <div class="status">
-        В работе
+        .status.waiting_parts {
+            background: #b45309;
+        }
+
+        .status.painting {
+            background: #db2777;
+        }
+
+        .status.ready {
+            background: #16a34a;
+        }
+
+        .status.done {
+            background: #15803d;
+        }
+
+        .status.cancelled {
+            background: #991b1b;
+        }
+
+    </style>
+
+    <h1 class="section-title">
+        Заказы клиентов
+    </h1>
+
+    <div class="order-grid">
+
+        {% for order in orders %}
+
+            <div class="order-card">
+
+                <h2>
+                    {{ order.vehicle.brand }}
+                    {{ order.vehicle.model }}
+                </h2>
+
+                <p>
+                    {{ order.problem_description }}
+                </p>
+
+                <br>
+
+                <strong>
+                    {{ order.user.full_name }}
+                </strong>
+
+                <div class="status {{ order.status }}">
+                    {{ order.get_status_display }}
+                </div>
+
+            </div>
+
+        {% endfor %}
+
     </div>
-
-</div>
-
-{% endfor %}
-
-</div>
 
 {% endblock %}

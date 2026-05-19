@@ -53,7 +53,19 @@ def service_create(request):
 
 def service_detail(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    return render(request, "orders/service_detail.html", {"service": service})
+
+    if request.method == "POST":
+        order = Order.objects.create(
+            user=request.user,
+            service=service,
+            status="new"
+        )
+
+        return redirect("orders:order_detail", pk=order.pk)
+
+    return render(request, "services/services_detail.html", {
+        "service": service
+    })
 
 def service_delete(request, pk):
     service = get_object_or_404(
