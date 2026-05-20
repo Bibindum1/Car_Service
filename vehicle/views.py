@@ -3,13 +3,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db.models import Q
 
-import vehicle
 from .models import Vehicle
 from .forms import VehicleForm
 
 @login_required
 def vehicle_list(request):
-    vehicles = Vehicle.objects.all()
+    vehicles = Vehicle.objects.filter(owner=request.user)
     search_query = request.GET.get('search', '')
 
     if search_query:
@@ -37,16 +36,22 @@ def vehicle_detail(request, pk):
 
 @login_required
 def vehicle_create(request):
-    vehicle.owner = request.user
     if request.method == "POST":
         form = VehicleForm(request.POST)
+
         if form.is_valid():
-            form.save()
+            vehicle = form.save(commit=False)
+            vehicle.owner = request.user
+            vehicle.save()
+
             messages.success(request, "Автомобиль создан.")
             return redirect("vehicle:vehicle_list")
     else:
         form = VehicleForm()
-    return render(request, "vehicle/create_vehicle.html", {"form": form})
+
+    return render(request, "vehicle/create_vehicle.html", {
+        "form": form
+    })
 
 @login_required
 def vehicle_update(request, pk):
@@ -60,14 +65,18 @@ def vehicle_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Данные автомобиля обновлены.")
-            return redirect("vehicle_detail", pk=pk)
+            return redirect("vehicle:vehicle_detail", pk=pk)
     else:
         form = VehicleForm(instance=vehicle)
     return render(request, "vehicle/update_vehicle.html", {"form": form})
 
 @login_required
 def vehicle_delete(request, pk):
-    vehicle = get_object_or_404(Vehicle, pk=pk)
+    vehicle = get_object_or_404(
+        Vehicle,
+        pk=pk,
+        owner=request.user
+    )
     if request.method == "POST":
         vehicle.delete()
         messages.success(request, "Автомобиль удалён.")
