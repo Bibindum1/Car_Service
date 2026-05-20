@@ -13,7 +13,6 @@ urlpatterns = [
     path("vehicle/", include("vehicle.urls")),
     path("users/", include("users.urls")),
 
-    # Django auth
     path("accounts/", include("django.contrib.auth.urls")),
 
 ]

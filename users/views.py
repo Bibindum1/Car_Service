@@ -6,46 +6,39 @@ from .forms import RegisterForm, LoginForm
 
 
 def safe_redirect(request, url, default_name='orders:home'):
-
     if not url or url == 'None':
         return redirect(default_name)
 
-    allowed = url_has_allowed_host_and_scheme(
+    if url_has_allowed_host_and_scheme(
         url,
         allowed_hosts={request.get_host()},
         require_https=request.is_secure()
-    )
-
-    if allowed:
+    ):
         return redirect(url)
 
     return redirect(default_name)
 
 
-
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('orders:home')
-    next_url = request.GET.get('next') or request.POST.get('next')
 
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return safe_redirect(request, next_url, default_name='orders:home')
+            return redirect('orders:home')
     else:
         form = RegisterForm()
 
-    return render(request, 'registration/register.html', {
-        'form': form,
-        'next': next_url,
-    })
+    return render(request, 'registration/register.html', {'form': form})
 
 
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('orders:home')
+
     next_url = request.GET.get('next') or request.POST.get('next')
 
     if request.method == 'POST':
@@ -53,7 +46,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return safe_redirect(request, next_url, default_name='orders:home')
+            return safe_redirect(request, next_url)
     else:
         form = LoginForm(request)
 
@@ -61,5 +54,3 @@ def login_view(request):
         'form': form,
         'next': next_url,
     })
-
-

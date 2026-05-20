@@ -8,19 +8,23 @@ from .models import Service, Order
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-
     form = ServiceAdminForm
 
     formfield_overrides = {
         models.ImageField: {"widget": ImageUploaderWidget()},
     }
+
     list_display = (
         "service_id",
         "vehicle",
-        # "customer",
+        "user",
         "date",
         "initial_price",
-        "description",
+    )
+
+    list_display_links = (
+        "service_id",
+        "vehicle",
     )
 
     search_fields = (
@@ -28,8 +32,8 @@ class ServiceAdmin(admin.ModelAdmin):
         "vehicle__plate_number",
         "vehicle__brand",
         "vehicle__model",
-        # "customer__last_name",
-        # "customer__first_name",
+        "user__username",
+        "user__full_name",
         "description",
     )
 
@@ -37,70 +41,29 @@ class ServiceAdmin(admin.ModelAdmin):
         "date",
         "vehicle__brand",
         "vehicle__model",
-        # "customer",
+    )
+
+    readonly_fields = (
+        "service_id",
     )
 
     ordering = ("-date",)
 
-    readonly_fields = ("service_id",)
+    list_per_page = 15
 
-    fieldsets = (
-        ("Основная информация", {
-            "fields": ("vehicle", "date", "image")
-        }),
-        ("Данные услуги", {
-            "fields": ("initial_price", "description")
-        }),
-        ("Служебные поля", {
-            "fields": ("service_id",),
-            "classes": ("collapse",),
-        }),
-    )
-
-
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
-
-    list_display = (
-        "order_id",
-        "name",
-        "phone",
-        "email",
-        "vehicle",
-        "service",
-        "status",
-    )
-
-    search_fields = (
-        "name",
-        "phone",
-        "email",
-        "vehicle",
-    )
-
-    list_filter = (
-        "status",
-        "service",
-    )
-
-    ordering = ("-order_id",)
-
-    readonly_fields = ("order_id",)
+    save_on_top = True
 
     fieldsets = (
         ("Основная информация", {
             "fields": (
-                "name",
-                "phone",
-                "email",
+                "user",
                 "vehicle",
-                "description",
-                "service",
-                "status",
+                "date",
             )
         }),
-        ("Служебные поля", {
-            "fields": ("order_id",),
-            "classes": ("collapse",),
+        ("Изображение", {
+            "fields": (
+                "image",
+            )
         }),
     )

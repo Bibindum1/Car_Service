@@ -7,12 +7,11 @@ class VehicleAdmin(admin.ModelAdmin):
     list_display = (
         "vehicle_id",
         "brand",
-        "model",
-        "plate_number",
-        "vin",
-        "year",
-        "mileage",
-        #"CustomUser",
+        "model"
+    )
+    list_display_links = (
+        "vehicle_id",
+        "brand",
     )
 
     search_fields = (
@@ -20,32 +19,58 @@ class VehicleAdmin(admin.ModelAdmin):
         "plate_number",
         "brand",
         "model",
-        "services__user__full_name"
+        "owner__username",
+        "owner__full_name",
+        "owner__phone",
     )
 
     list_filter = (
         "brand",
         "model",
         "year",
-        #"user",
     )
 
-    ordering = ("brand", "model")
+    readonly_fields = (
+        "vehicle_id",
+    )
 
-    readonly_fields = ("vehicle_id",)
+    ordering = (
+        "brand",
+        "model",
+    )
+
+    list_per_page = 20
+
+    save_on_top = True
 
     fieldsets = (
         ("Основная информация", {
-            "fields": ("brand", "model", "year")
+            "fields": (
+                "owner",
+                "brand",
+                "model",
+                "year",
+                "color",
+            )
         }),
-        ("Идентификаторы", {
-            "fields": ("plate_number", "vin")
+
+        ("Регистрационные данные", {
+            "fields": (
+                "plate_number",
+                "vin",
+            )
         }),
-        ("Эксплуатация", {
-            "fields": ("mileage",)
+
+        ("Техническая информация", {
+            "fields": (
+                "mileage",
+            )
         }),
-        ("Служебные поля", {
-            "fields": ("vehicle_id",),
+
+        ("Служебная информация", {
+            "fields": (
+                "vehicle_id",
+            ),
             "classes": ("collapse",),
         }),
     )
