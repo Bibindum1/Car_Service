@@ -6,7 +6,7 @@ app_name = 'users'
 
 urlpatterns = [
     path("login/", login_view, name="login"),
-    path("logout/", LogoutView.as_view(next_page="home"), name="logout"),
+    path("logout/", LogoutView.as_view(next_page="orders:home"), name="logout"),
     path("register/", register_view, name="register"),
 
 

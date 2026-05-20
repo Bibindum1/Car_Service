@@ -8,6 +8,7 @@ from .models import Service, Order
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
+
     form = ServiceAdminForm
 
     formfield_overrides = {

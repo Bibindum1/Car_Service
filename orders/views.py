@@ -19,8 +19,9 @@ def service_list(request):
     )
 
     if q:
+        services = services.filter(
         (Q(description__icontains=q) |
-        Q(vehicle__brand__icontains=q))
+        Q(vehicle__brand__icontains=q)))
 
     if sort == "price_asc":
         services = services.order_by("initial_price")
@@ -40,16 +41,7 @@ def service_list(request):
         "sort": sort,
     })
 
-def service_create(request):
-    if request.method == "POST":
-        form = ServiceForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Услуга создана.")
-            return redirect("shop:service_list")
-    else:
-        form = ServiceForm()
-    return render(request, "services/services_create.html", {"form": form})
+
 
 def service_detail(request, pk):
     service = get_object_or_404(Service, pk=pk)
@@ -67,27 +59,17 @@ def service_detail(request, pk):
         "service": service
     })
 
-def service_delete(request, pk):
-    service = get_object_or_404(
-        Service.objects.select_related("vehicle"),
-        pk=pk,
-    )
-    if request.method == "POST":
-        service.delete()
-        messages.success(request, "Услуга удалена.")
-        return redirect("shop:service_list")
-    return render(request, "", {"service": service})
-
-
+@login_required
 def order_list(request):
-    orders = Order.objects.all().order_by("-order_id")
+    orders = Order.objects.filter(user=request.user).order_by("-order_id")
 
     search_query = request.GET.get("search", "")
 
     if search_query:
+        orders = orders.filter(
         (Q(name__icontains=search_query) |
          (Q(phone__icontains=search_query) |
-         Q(car_model__icontains=search_query)))
+         Q(vehicle__icontains=search_query))))
 
     return render(request, "orders/orders.html", {
         "orders": orders,
@@ -106,7 +88,7 @@ def order_create(request):
             order.save()
 
             messages.success(request, "Заказ создан.")
-            return redirect("shop:order_list")
+            return redirect("orsers:order_list")
 
     else:
         form = OrderForm()
@@ -114,19 +96,6 @@ def order_create(request):
     return render(request, "orders/orders.html", {
         "form": form
     })
-
-
-def order_delete(request, pk):
-    order = get_object_or_404(
-        Order.objects.select_related("vehicle"),
-        pk=pk,
-    )
-    if request.method == "POST":
-        order.delete()
-        messages.success(request, "Заказ удалён.")
-        return redirect("shop:order_list")
-    return render(request, "orders/delete_order.html", {"order": order})
-
 
 def home(request):
     return render(request, "index.html")

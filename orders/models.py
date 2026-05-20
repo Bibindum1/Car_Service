@@ -6,7 +6,7 @@ from vehicle.models import Vehicle
 
 class Service(models.Model):
     service_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="services", default=1)
+    user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="services")
     vehicle = models.ForeignKey("vehicle.Vehicle", on_delete=models.CASCADE, related_name="services", blank=True)
     date = models.DateField()
     description = models.TextField()
@@ -73,7 +73,7 @@ class Order(models.Model):
 
 
 
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Заказы"
