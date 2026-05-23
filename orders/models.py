@@ -15,7 +15,7 @@ class Service(models.Model):
         null=True
     )
     date = models.DateField()
-    description = models.TextField()
+    description = models.TextField(max_length=100)
     initial_price = models.DecimalField(
         max_digits=10,
         validators=[MinValueValidator(500.00)],

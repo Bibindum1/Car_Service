@@ -1,7 +1,11 @@
 from django import forms
+from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 import re
+
+from django.shortcuts import redirect
+
 from .models import CustomUser
 
 
@@ -135,3 +139,4 @@ class LoginForm(AuthenticationForm):
             field.widget.attrs.update({
                 'class': 'form-control'
             })
+

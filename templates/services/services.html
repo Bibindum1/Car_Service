@@ -10,7 +10,10 @@
 
 .services-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+
+    /* Было auto-fit, из-за этого иногда 4 карточки */
+    grid-template-columns:repeat(3,1fr);
+
     gap:25px;
 }
 
@@ -20,6 +23,10 @@
     overflow:hidden;
     border:1px solid #222;
     transition:.35s;
+
+    /* Чтобы кнопки были на одном уровне */
+    display:flex;
+    flex-direction:column;
 }
 
 .service-card:hover{
@@ -35,6 +42,11 @@
 
 .service-content{
     padding:26px;
+
+    /* Растягивает контент */
+    display:flex;
+    flex-direction:column;
+    flex:1;
 }
 
 .service-content h2{
@@ -44,6 +56,9 @@
 .service-content p{
     color:#b0b0b0;
     line-height:1.7;
+
+    /* Чтобы карточки были ровнее */
+    flex:1;
 }
 
 .price{
@@ -51,6 +66,14 @@
     color:#ff6600;
     font-size:34px;
     font-weight:900;
+}
+
+/* Кнопка */
+.btn{
+    margin-top:25px;
+    width:100%;
+    text-align:center;
+    box-sizing:border-box;
 }
 
 </style>
@@ -82,8 +105,6 @@
         <div class="price">
             {{ service.initial_price }}€
         </div>
-
-        <br>
 
         <a href="{% url 'orders:service_detail' service.pk %}" class="btn">
             Подробнее

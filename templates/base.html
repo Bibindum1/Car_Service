@@ -235,20 +235,14 @@
         </div>
 
         <nav>
+            <a href="{% url 'users:profile' %}">
+                <i class="fa-solid fa-user"></i>
+                Профиль
+            </a>
 
             <a href="{% url 'orders:home' %}">
                 <i class="fa-solid fa-house"></i>
                 Главная
-            </a>
-
-            <a href="{% url 'vehicle:vehicle_list' %}">
-                <i class="fa-solid fa-car"></i>
-                Автомобили
-            </a>
-
-            <a href="{% url 'orders:order_list' %}">
-                <i class="fa-solid fa-file-lines"></i>
-                Заказы
             </a>
 
             <a href="{% url 'orders:services_list' %}">
@@ -269,6 +263,11 @@
             <a href="{% url 'orders:about_list' %}">
                 <i class="fa-solid fa-circle-info"></i>
                 О сервисе
+            </a>
+
+            <a class="nav-link" href="{% url 'users:logout' %}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Выйти
             </a>
 
         </nav>

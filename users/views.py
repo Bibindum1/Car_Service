@@ -1,7 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.utils.http import url_has_allowed_host_and_scheme
 
+from orders.models import Order
+from vehicle.models import Vehicle
 from .forms import RegisterForm, LoginForm
 
 
@@ -53,4 +56,31 @@ def login_view(request):
     return render(request, 'registration/login.html', {
         'form': form,
         'next': next_url,
+    })
+
+def logout_view(request):
+
+    if request.method == "POST":
+        logout(request)
+        return redirect('users:login')
+
+    return render(request, 'registration/logout.html')
+
+@login_required
+def profile_view(request):
+
+    vehicles = Vehicle.objects.filter(
+        owner=request.user
+    )
+
+    orders = Order.objects.filter(
+        user=request.user
+    ).select_related(
+        "vehicle",
+        "service"
+    ).order_by("-created_at")
+
+    return render(request, "profile/profile.html", {
+        "vehicles": vehicles,
+        "orders": orders,
     })
