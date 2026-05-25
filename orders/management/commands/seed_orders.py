@@ -235,6 +235,10 @@ class Command(BaseCommand):
                     randint(50, 3000)
                 ),
 
+                title=fake.text(
+                    max_nb_chars=50
+                )
+
             )
 
             if images:

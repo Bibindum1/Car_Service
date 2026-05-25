@@ -5,6 +5,7 @@ from vehicle.models import Vehicle
 
 
 class Service(models.Model):
+    title = models.CharField(max_length=50)
     service_id = models.AutoField(primary_key=True)
     description = models.TextField(max_length=100)
     initial_price = models.DecimalField(

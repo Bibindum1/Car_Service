@@ -94,11 +94,82 @@
             box-shadow: 0 10px 25px rgba(255, 102, 0, .25);
         }
 
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .search-box input,
+        .search-box select {
+            flex: 1;
+            min-width: 220px;
+
+            background: #121212;
+            border: 1px solid #222;
+
+            padding: 16px 20px;
+            border-radius: 16px;
+
+            color: white;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            background: linear-gradient(135deg, #ff6600, #ff8a33);
+            border: none;
+
+            padding: 16px 28px;
+            border-radius: 16px;
+
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+
+            transition: .3s;
+        }
+
+        .search-box button:hover {
+            transform: translateY(-2px);
+        }
+
     </style>
 
     <h1 class="section-title">
         Услуги автосервиса
     </h1>
+
+    <form method="get" class="search-box">
+
+        <input
+                type="text"
+                name="q"
+                placeholder="Поиск услуги..."
+                value="{{ q }}"
+        >
+
+        <select name="sort">
+            <option value="">Сортировка</option>
+
+            <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>
+                Сначала дешёвые
+            </option>
+
+            <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>
+                Сначала дорогие
+            </option>
+
+            <option value="popular" {% if sort == 'popular' %}selected{% endif %}>
+                Популярные
+            </option>
+        </select>
+
+        <button type="submit">
+            Найти
+        </button>
+
+    </form>
 
     <div class="services-grid">
 
@@ -113,7 +184,7 @@
                 <div class="service-content">
 
                     <h2>
-                        {{ service.course_name }}
+                        {{ service.title }}
                     </h2>
 
                     <p>

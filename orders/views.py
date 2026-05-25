@@ -20,8 +20,9 @@ def service_list(request):
 
     if q:
         services = services.filter(
-            (Q(description__icontains=q) |
-             Q(vehicle__brand__icontains=q)))
+            Q(title__icontains=q) |
+            Q(description__icontains=q)
+        )
 
     if sort == "price_asc":
         services = services.order_by("initial_price")
@@ -123,7 +124,13 @@ def order_create(request):
 
 
 def home(request):
-    return render(request, "index.html")
+    services = Service.objects.annotate(
+        popularity=Count("orders")
+    ).order_by("-popularity")[:6]
+
+    return render(request, "index.html", {
+        "services": services
+    })
 
 
 def about_list(request):
