@@ -12,6 +12,5 @@ urlpatterns = [
     path("orders/", views.order_list, name="order_list"),
 
     path("about/", views.about_list, name="about_list"),
-    path("prices/", views.prices, name="prices"),
     path("reviews/", views.reviews, name="reviews"),
 ]

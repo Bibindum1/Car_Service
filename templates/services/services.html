@@ -1,121 +1,139 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Услуги
+    Услуги
 {% endblock %}
 
 {% block content %}
 
-<style>
+    <style>
 
-.services-grid{
-    display:grid;
+        .services-grid {
+            display: grid;
 
-    /* Было auto-fit, из-за этого иногда 4 карточки */
-    grid-template-columns:repeat(3,1fr);
+            /* Было auto-fit, из-за этого иногда 4 карточки */
+            grid-template-columns:repeat(3, 1fr);
 
-    gap:25px;
-}
+            gap: 25px;
+        }
 
-.service-card{
-    background:#121212;
-    border-radius:30px;
-    overflow:hidden;
-    border:1px solid #222;
-    transition:.35s;
+        .service-card {
+            background: #121212;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid #222;
+            transition: .35s;
 
-    /* Чтобы кнопки были на одном уровне */
-    display:flex;
-    flex-direction:column;
-}
+            /* Чтобы кнопки были на одном уровне */
+            display: flex;
+            flex-direction: column;
+        }
 
-.service-card:hover{
-    transform:translateY(-8px);
-    border-color:#ff6600;
-}
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: #ff6600;
+        }
 
-.service-card img{
-    width:100%;
-    height:260px;
-    object-fit:cover;
-}
+        .service-card img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
 
-.service-content{
-    padding:26px;
+        .service-content {
+            padding: 26px;
 
-    /* Растягивает контент */
-    display:flex;
-    flex-direction:column;
-    flex:1;
-}
+            /* Растягивает контент */
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
 
-.service-content h2{
-    margin-bottom:15px;
-}
+        .service-content h2 {
+            margin-bottom: 15px;
+        }
 
-.service-content p{
-    color:#b0b0b0;
-    line-height:1.7;
+        .service-content p {
+            color: #b0b0b0;
+            line-height: 1.7;
 
-    /* Чтобы карточки были ровнее */
-    flex:1;
-}
+            /* Чтобы карточки были ровнее */
+            flex: 1;
+        }
 
-.price{
-    margin-top:20px;
-    color:#ff6600;
-    font-size:34px;
-    font-weight:900;
-}
+        .price {
+            margin-top: 20px;
+            color: #ff6600;
+            font-size: 34px;
+            font-weight: 900;
+        }
 
-/* Кнопка */
-.btn{
-    margin-top:25px;
-    width:100%;
-    text-align:center;
-    box-sizing:border-box;
-}
+        /* Кнопка */
+        .service-btn {
+            margin-top: 25px;
 
-</style>
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-<h1 class="section-title">
-    Услуги автосервиса
-</h1>
+            padding: 16px 20px;
 
-<div class="services-grid">
+            border-radius: 16px;
 
-{% for service in services %}
+            background: linear-gradient(135deg, #ff6600, #ff8a33);
 
-<div class="service-card">
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
 
-    {% if service.image %}
-    <img src="{{ service.image.url }}">
-    {% endif %}
+            transition: .3s;
+        }
 
-    <div class="service-content">
+        .service-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 102, 0, .25);
+        }
 
-        <h2>
-            {{ service.course_name }}
-        </h2>
+    </style>
 
-        <p>
-            {{ service.description }}
-        </p>
+    <h1 class="section-title">
+        Услуги автосервиса
+    </h1>
 
-        <div class="price">
-            {{ service.initial_price }}€
-        </div>
+    <div class="services-grid">
 
-        <a href="{% url 'orders:service_detail' service.pk %}" class="btn">
-            Подробнее
-        </a>
+        {% for service in services %}
+
+            <div class="service-card">
+
+                {% if service.image %}
+                    <img src="{{ service.image.url }}">
+                {% endif %}
+
+                <div class="service-content">
+
+                    <h2>
+                        {{ service.course_name }}
+                    </h2>
+
+                    <p>
+                        {{ service.description }}
+                    </p>
+
+                    <div class="price">
+                        {{ service.initial_price }}₽
+                    </div>
+
+                    <a href="{% url 'orders:service_detail' service.pk %}" class="service-btn">
+                        Подробнее
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
 
     </div>
-
-</div>
-
-{% endfor %}
-
-</div>
 
 {% endblock %}

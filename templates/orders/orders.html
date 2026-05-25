@@ -1,132 +1,209 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Заказы
+Создание заказа
 {% endblock %}
 
 {% block content %}
 
-    <style>
+<style>
 
-        .order-grid {
-            display: grid;
-            grid-template-columns:repeat(auto-fit, minmax(340px, 1fr));
-            gap: 25px;
+    .create-page {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px;
+    }
+
+    .create-card {
+        background: #111111;
+        border: 1px solid #222;
+        border-radius: 36px;
+        padding: 50px;
+        box-shadow: 0 0 40px rgba(0,0,0,.35);
+    }
+
+    .create-title {
+        font-size: 56px;
+        font-weight: 900;
+        margin-bottom: 15px;
+    }
+
+    .create-subtitle {
+        color: #9b9b9b;
+        font-size: 17px;
+        line-height: 1.7;
+        margin-bottom: 40px;
+        max-width: 700px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+    }
+
+    .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        margin-bottom: 12px;
+        font-size: 15px;
+        color: #d5d5d5;
+        font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        background: #0c0c0c;
+        border: 1px solid #2a2a2a;
+        border-radius: 18px;
+        padding: 18px 20px;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        transition: .25s;
+        box-sizing: border-box;
+    }
+
+    .form-group textarea {
+        min-height: 180px;
+        resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #ff6600;
+        box-shadow: 0 0 0 5px rgba(255,102,0,.12);
+    }
+
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin-top: 10px;
+        color: #ff5f5f;
+        font-size: 14px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        border: none;
+        border-radius: 20px;
+        padding: 22px;
+        margin-top: 35px;
+        background: linear-gradient(135deg, #ff6600, #ff8f3a);
+        color: white;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(255,102,0,.25);
+    }
+
+    .bottom-text {
+        text-align: center;
+        color: #7f7f7f;
+        margin-top: 22px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+
+        .form-grid {
+            grid-template-columns: 1fr;
         }
 
-        .order-card {
-            background: #121212;
-            border-radius: 28px;
-            padding: 30px;
-            border: 1px solid #222;
-            transition: .35s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .create-title {
+            font-size: 42px;
         }
 
-        .order-card:hover {
-            border-color: #ff6600;
-            transform: translateY(-5px);
+        .create-card {
+            padding: 35px;
         }
 
-        .order-card h2 {
-            margin-bottom: 15px;
+    }
+
+    @media (max-width: 600px) {
+
+        .create-page {
+            padding: 20px;
         }
 
-        .order-card p {
-            color: #b0b0b0;
-            line-height: 1.7;
+        .create-card {
+            padding: 25px;
         }
 
-        .status {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            width: fit-content;
-
-            padding: 10px 18px;
-
-            border-radius: 999px;
-
-            font-size: 14px;
-            font-weight: 700;
-
-            margin-top: 20px;
+        .create-title {
+            font-size: 34px;
         }
 
-        .status.new {
-            background: #3a3a3a;
-        }
+    }
 
-        .status.accepted {
-            background: #1d4ed8;
-        }
+</style>
 
-        .status.diagnostic {
-            background: #7c3aed;
-        }
+<div class="create-page">
 
-        .status.in_progress {
-            background: #ff6600;
-        }
+    <div class="create-card">
 
-        .status.waiting_parts {
-            background: #b45309;
-        }
+        <h1 class="create-title">
+            Создание заказа
+        </h1>
 
-        .status.painting {
-            background: #db2777;
-        }
+        <p class="create-subtitle">
+            Заполните форму ниже для оформления заявки на обслуживание автомобиля.
+        </p>
 
-        .status.ready {
-            background: #16a34a;
-        }
+        <form method="post">
 
-        .status.done {
-            background: #15803d;
-        }
+            {% csrf_token %}
 
-        .status.cancelled {
-            background: #991b1b;
-        }
+            <div class="form-grid">
 
-    </style>
+                {% for field in form %}
 
-    <h1 class="section-title">
-        Заказы клиентов
-    </h1>
+                    <div class="form-group {% if field.name == 'description' %}full-width{% endif %}">
 
-    <div class="order-grid">
+                        <label>
+                            {{ field.label }}
+                        </label>
 
-        {% for order in orders %}
+                        {{ field }}
 
-            <div class="order-card">
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
 
-                <h2>
-                    {{ order.vehicle.brand }}
-                    {{ order.vehicle.model }}
-                </h2>
+                    </div>
 
-                <p>
-                    {{ order.problem_description }}
-                </p>
-
-                <br>
-
-                <strong>
-                    {{ order.user.full_name }}
-                </strong>
-
-                <div class="status {{ order.status }}">
-                    {{ order.get_status_display }}
-                </div>
+                {% endfor %}
 
             </div>
 
-        {% endfor %}
+            <button type="submit" class="submit-btn">
+                Создать заказ
+            </button>
+
+            <div class="bottom-text">
+                После отправки заявки с вами свяжется менеджер автосервиса.
+            </div>
+
+        </form>
 
     </div>
+
+</div>
 
 {% endblock %}

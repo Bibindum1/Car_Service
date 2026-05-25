@@ -4,14 +4,8 @@ from django.utils.html import format_html
 from .models import Service, Order
 
 
-# =========================
-# ORDER ADMIN
-# =========================
-
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-
-    # Колонки в списке
     list_display = (
         "order_id",
         "client_name",
@@ -21,20 +15,17 @@ class OrderAdmin(admin.ModelAdmin):
         "created_at",
     )
 
-    # Кликабельные поля
     list_display_links = (
         "order_id",
         "client_name",
     )
 
-    # Фильтры справа
     list_filter = (
         "status",
         "created_at",
         "vehicle__brand",
     )
 
-    # Поиск
     search_fields = (
         "name",
         "phone",
@@ -46,17 +37,14 @@ class OrderAdmin(admin.ModelAdmin):
         "user__username",
     )
 
-    # Сортировка
     ordering = (
         "-created_at",
     )
 
-    # Только чтение
     readonly_fields = (
         "created_at",
     )
 
-    # Поля редактирования
     fieldsets = (
 
         ("Информация о клиенте", {
@@ -89,27 +77,20 @@ class OrderAdmin(admin.ModelAdmin):
         }),
     )
 
-    # Количество на странице
     list_per_page = 20
 
-    # Оптимизация
     list_select_related = (
         "user",
         "vehicle",
         "service",
     )
 
-    # Actions
     actions = [
         "mark_as_accepted",
         "mark_as_in_progress",
         "mark_as_done",
         "mark_as_cancelled",
     ]
-
-    # =========================
-    # КРАСИВЫЕ ПОЛЯ
-    # =========================
 
     @admin.display(description="Клиент")
     def client_name(self, obj):
@@ -121,7 +102,6 @@ class OrderAdmin(admin.ModelAdmin):
 
     @admin.display(description="Услуга")
     def service_info(self, obj):
-
         if obj.service:
             return f"#{obj.service.service_id}"
 
@@ -129,7 +109,6 @@ class OrderAdmin(admin.ModelAdmin):
 
     @admin.display(description="Статус")
     def colored_status(self, obj):
-
         colors = {
             "new": "#3498db",
             "accepted": "#f39c12",
@@ -156,10 +135,6 @@ class OrderAdmin(admin.ModelAdmin):
             names.get(obj.status)
         )
 
-    # =========================
-    # ACTIONS
-    # =========================
-
     @admin.action(description="Пометить как 'Принята'")
     def mark_as_accepted(self, request, queryset):
         queryset.update(status="accepted")
@@ -177,13 +152,8 @@ class OrderAdmin(admin.ModelAdmin):
         queryset.update(status="cancelled")
 
 
-# =========================
-# SERVICE ADMIN
-# =========================
-
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-
     list_display = (
         "service_id",
         "vehicle",

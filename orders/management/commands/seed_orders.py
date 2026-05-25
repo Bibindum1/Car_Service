@@ -17,10 +17,6 @@ fake = Faker("ru_RU")
 
 User = get_user_model()
 
-# ---------------------------------------------------
-# НАСТРОЙКИ
-# ---------------------------------------------------
-
 CAR_BRANDS = {
     "BMW": ["M5", "X5", "320i", "M3"],
     "Mercedes": ["E63", "C200", "GLE", "CLS"],
@@ -122,10 +118,6 @@ class Command(BaseCommand):
         Service.objects.all().delete()
         Vehicle.objects.all().delete()
 
-        # ---------------------------------------------------
-        # USERS
-        # ---------------------------------------------------
-
         self.stdout.write(
             self.style.WARNING("Создание пользователей...")
         )
@@ -155,10 +147,6 @@ class Command(BaseCommand):
                 f"Пользователей создано: {len(users)}"
             )
         )
-
-        # ---------------------------------------------------
-        # VEHICLES
-        # ---------------------------------------------------
 
         self.stdout.write(
             self.style.WARNING("Создание автомобилей...")
@@ -205,10 +193,6 @@ class Command(BaseCommand):
             )
         )
 
-        # ---------------------------------------------------
-        # MEDIA
-        # ---------------------------------------------------
-
         media_seed_path = os.path.join(
             settings.BASE_DIR,
             "media_seed"
@@ -232,10 +216,6 @@ class Command(BaseCommand):
                             file
                         )
                     )
-
-        # ---------------------------------------------------
-        # SERVICES
-        # ---------------------------------------------------
 
         self.stdout.write(
             self.style.WARNING("Создание услуг...")
@@ -267,8 +247,6 @@ class Command(BaseCommand):
                 )
             )
 
-            # image
-
             if images:
 
                 random_image = random.choice(images)
@@ -291,9 +269,6 @@ class Command(BaseCommand):
             )
         )
 
-        # ---------------------------------------------------
-        # ORDERS
-        # ---------------------------------------------------
 
         self.stdout.write(
             self.style.WARNING("Создание заказов...")

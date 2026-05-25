@@ -71,7 +71,7 @@ def service_detail(request, pk):
             owner=request.user
         )
 
-    return render(request, "orders/service_detail.html", {
+    return render(request, "services/services_detail.html", {
         "service": service,
         "form": form
     })
