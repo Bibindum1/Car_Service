@@ -178,8 +178,6 @@ class Command(BaseCommand):
 
                 year=randint(2000, 2025),
 
-                mileage=randint(1000, 350000),
-
                 color=choice(COLORS),
 
                 owner=owner
@@ -229,10 +227,6 @@ class Command(BaseCommand):
 
             service = Service.objects.create(
 
-                user=vehicle.owner,
-
-                vehicle=vehicle,
-
                 description=fake.text(
                     max_nb_chars=400
                 ),
@@ -241,10 +235,6 @@ class Command(BaseCommand):
                     randint(50, 3000)
                 ),
 
-                date=fake.date_between(
-                    start_date="-1y",
-                    end_date="today"
-                )
             )
 
             if images:

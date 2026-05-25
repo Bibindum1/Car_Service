@@ -156,29 +156,18 @@ class OrderAdmin(admin.ModelAdmin):
 class ServiceAdmin(admin.ModelAdmin):
     list_display = (
         "service_id",
-        "vehicle",
-        "user",
-        "date",
         "initial_price",
         "orders_count",
     )
 
     list_display_links = (
         "service_id",
-        "vehicle",
     )
 
     search_fields = (
-        "vehicle__brand",
-        "vehicle__model",
         "description",
-        "user__username",
     )
 
-    list_filter = (
-        "date",
-        "vehicle__brand",
-    )
 
     ordering = (
         "-service_id",
@@ -192,9 +181,6 @@ class ServiceAdmin(admin.ModelAdmin):
 
         ("Основная информация", {
             "fields": (
-                "user",
-                "vehicle",
-                "date",
             )
         }),
 

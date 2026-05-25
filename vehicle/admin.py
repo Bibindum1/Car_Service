@@ -61,11 +61,6 @@ class VehicleAdmin(admin.ModelAdmin):
             )
         }),
 
-        ("Техническая информация", {
-            "fields": (
-                "mileage",
-            )
-        }),
 
         ("Служебная информация", {
             "fields": (

@@ -27,7 +27,7 @@ def vehicle_list(request):
 
 @login_required
 def vehicle_detail(request, pk):
-    vehicle = get_object_or_404(Vehicle, pk=pk)
+    vehicle = get_object_or_404(Vehicle, pk=pk, owner=request.user)
     return render(
         request,
         "vehicle/detail_vehicle.html",

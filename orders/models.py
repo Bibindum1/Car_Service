@@ -6,15 +6,6 @@ from vehicle.models import Vehicle
 
 class Service(models.Model):
     service_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, related_name="services")
-    vehicle = models.ForeignKey(
-        "vehicle.Vehicle",
-        on_delete=models.CASCADE,
-        related_name="services",
-        blank=True,
-        null=True
-    )
-    date = models.DateField()
     description = models.TextField(max_length=100)
     initial_price = models.DecimalField(
         max_digits=10,
@@ -27,15 +18,9 @@ class Service(models.Model):
     class Meta:
         verbose_name_plural = "Услуги"
         verbose_name = "Услуга"
-        constraints = [
-            models.UniqueConstraint(
-                fields=["vehicle", "date", "description"],
-                name="unique_service_vehicle_date_desc"
-            )
-        ]
 
     def __str__(self):
-        return f"{self.vehicle} {self.date}"
+        return f" {self.description}"
 
 
 class Order(models.Model):
@@ -66,7 +51,7 @@ class Order(models.Model):
     )
 
 
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.PROTECT)
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     description = models.TextField()
 
     service = models.ForeignKey(
@@ -76,8 +61,6 @@ class Order(models.Model):
         blank=True,
         related_name="orders"
     )
-
-
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 

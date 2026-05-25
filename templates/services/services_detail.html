@@ -1,285 +1,268 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Детали услуги
+    {{ service.title }}
 {% endblock %}
 
 {% block content %}
 
 <style>
 
-    .service-page {
-        width: 100%;
-        max-width: 1700px;
-        margin: 0 auto;
-        padding: 40px 60px;
-    }
-
-    .service-wrapper {
+    .service-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
         display: grid;
-        grid-template-columns: 1.2fr 1fr;
+        grid-template-columns: 1fr 400px;
         gap: 40px;
-        align-items: start;
     }
 
-    .service-card,
-    .order-card {
-        background: #111111;
-        border: 1px solid #222;
-        border-radius: 35px;
-        padding: 45px;
-        box-shadow: 0 0 40px rgba(0,0,0,.35);
+    .service-card {
+        background: #121212;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid #2a2a2a;
+    }
+
+    .service-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+
+    .service-content {
+        padding: 30px;
     }
 
     .service-title {
-        font-size: 54px;
-        font-weight: 900;
+        font-size: 34px;
         margin-bottom: 20px;
+        color: white;
     }
 
     .service-description {
-        font-size: 18px;
-        color: #9e9e9e;
-        line-height: 1.9;
-        margin-bottom: 40px;
-    }
-
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-
-    .info-item {
-        background: #1a1a1a;
-        border-radius: 24px;
-        padding: 28px;
-    }
-
-    .info-label {
-        color: #888;
-        margin-bottom: 12px;
-        font-size: 15px;
-    }
-
-    .info-value {
-        font-size: 22px;
-        font-weight: 700;
-    }
-
-    .order-title {
-        font-size: 42px;
-        font-weight: 900;
-        margin-bottom: 15px;
-    }
-
-    .order-subtitle {
-        color: #8f8f8f;
-        margin-bottom: 35px;
+        color: #cfcfcf;
         line-height: 1.7;
         font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    .service-price {
+        font-size: 28px;
+        font-weight: bold;
+        color: #4CAF50;
+    }
+
+    .order-form-card {
+        background: #121212;
+        border-radius: 20px;
+        padding: 30px;
+        border: 1px solid #2a2a2a;
+        height: fit-content;
+        position: sticky;
+        top: 30px;
+    }
+
+    .form-title {
+        font-size: 28px;
+        margin-bottom: 25px;
+        color: white;
     }
 
     .form-group {
-        margin-bottom: 28px;
+        margin-bottom: 20px;
     }
 
     .form-group label {
         display: block;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
         color: #d0d0d0;
-        font-size: 15px;
-        font-weight: 600;
+        font-size: 14px;
     }
 
     .form-group input,
-    .form-group select,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
         width: 100%;
-        background: #0c0c0c;
-        border: 1px solid #2b2b2b;
-        border-radius: 18px;
-        padding: 20px;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid #333;
+        background: #1b1b1b;
         color: white;
-        font-size: 16px;
-        transition: .25s;
+        font-size: 15px;
         outline: none;
-        box-sizing: border-box;
-    }
-
-    .form-group textarea {
-        min-height: 180px;
-        resize: vertical;
+        transition: 0.2s;
     }
 
     .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-        border-color: #ff6600;
-        box-shadow: 0 0 0 5px rgba(255,102,0,.12);
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: #4CAF50;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
     }
 
     .submit-btn {
         width: 100%;
-        padding: 22px;
+        padding: 16px;
         border: none;
-        border-radius: 20px;
-        background: linear-gradient(135deg, #ff6600, #ff8a33);
+        border-radius: 12px;
+        background: #4CAF50;
         color: white;
-        font-size: 18px;
-        font-weight: 700;
+        font-size: 16px;
+        font-weight: bold;
         cursor: pointer;
-        transition: .3s;
-        margin-top: 10px;
+        transition: 0.2s;
     }
 
     .submit-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(255,102,0,.28);
+        background: #43a047;
     }
 
-    .errorlist {
-        list-style: none;
-        padding: 0;
-        margin-top: 10px;
-        color: #ff5e5e;
-        font-size: 14px;
+    .no-vehicles {
+        background: #1f1f1f;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 20px;
+        color: #cfcfcf;
+        text-align: center;
     }
 
-    @media (max-width: 1200px) {
+    .add-vehicle-btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 12px 18px;
+        background: #4CAF50;
+        border-radius: 10px;
+        color: white;
+        text-decoration: none;
+        transition: 0.2s;
+    }
 
-        .service-wrapper {
+    .add-vehicle-btn:hover {
+        background: #43a047;
+    }
+
+    @media (max-width: 1000px) {
+
+        .service-container {
             grid-template-columns: 1fr;
         }
 
-    }
-
-    @media (max-width: 700px) {
-
-        .service-page {
-            padding: 20px;
+        .order-form-card {
+            position: static;
         }
-
-        .service-card,
-        .order-card {
-            padding: 28px;
-        }
-
-        .service-title {
-            font-size: 38px;
-        }
-
-        .order-title {
-            font-size: 34px;
-        }
-
-        .info-grid {
-            grid-template-columns: 1fr;
-        }
-
     }
 
 </style>
 
-<div class="service-page">
+<div class="service-container">
 
-    <div class="service-wrapper">
+    <div class="service-card">
 
-        <div class="service-card">
+        {% if service.image %}
+            <img src="{{ service.image.url }}"
+                 alt="{{ service.title }}"
+                 class="service-image">
+        {% endif %}
+
+        <div class="service-content">
 
             <h1 class="service-title">
                 {{ service.title }}
             </h1>
 
-            <p class="service-description">
+            <div class="service-description">
                 {{ service.description }}
-            </p>
+            </div>
 
-            <div class="info-grid">
-
-                <div class="info-item">
-                    <div class="info-label">
-                        Стоимость
-                    </div>
-
-                    <div class="info-value">
-                        {{ service.initial_price }} ₽
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-label">
-                        Автомобиль
-                    </div>
-
-                    <div class="info-value">
-                        {{ service.vehicle }}
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-label">
-                        Дата услуги
-                    </div>
-
-                    <div class="info-value">
-                        {{ service.date }}
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-label">
-                        Статус
-                    </div>
-
-                    <div class="info-value">
-                        {{ service.status }}
-                    </div>
-                </div>
-
+            <div class="service-price">
+                от {{ service.initial_price }} ₽
             </div>
 
         </div>
 
-        <div class="order-card">
+    </div>
 
-            <h2 class="order-title">
-                Оформить заказ
-            </h2>
+    <div class="order-form-card">
 
-            <p class="order-subtitle">
-                Заполните форму ниже, и мы свяжемся с вами для подтверждения записи.
-            </p>
+        <h2 class="form-title">
+            Создать заявку
+        </h2>
+
+        {% if user_vehicles %}
 
             <form method="post">
 
                 {% csrf_token %}
 
-                {% for field in form %}
+                <div class="form-group">
+                    <label>
+                        Ваше имя
+                    </label>
 
-                    <div class="form-group">
+                    {{ form.name }}
+                </div>
 
-                        <label>
-                            {{ field.label }}
-                        </label>
+                <div class="form-group">
+                    <label>
+                        Номер телефона
+                    </label>
 
-                        {{ field }}
+                    {{ form.phone }}
+                </div>
 
-                        {% if field.errors %}
-                            {{ field.errors }}
-                        {% endif %}
+                <div class="form-group">
+                    <label>
+                        Электронная почта
+                    </label>
 
-                    </div>
+                    {{ form.email }}
+                </div>
 
-                {% endfor %}
+                <div class="form-group">
+                    <label>
+                        Автомобиль
+                    </label>
+
+                    {{ form.vehicle }}
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Комментарий к заявке
+                    </label>
+
+                    {{ form.description }}
+                </div>
 
                 <button type="submit" class="submit-btn">
-                    Создать заказ
+                    Отправить заявку
                 </button>
 
             </form>
 
-        </div>
+        {% else %}
+
+            <div class="no-vehicles">
+
+                <p>
+                    У вас пока нет добавленных автомобилей.
+                </p>
+
+                <a href="{% url 'vehicle:vehicle_create' %}"
+                   class="add-vehicle-btn">
+
+                    Добавить автомобиль
+
+                </a>
+
+            </div>
+
+        {% endif %}
 
     </div>
 

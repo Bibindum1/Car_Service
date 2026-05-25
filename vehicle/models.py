@@ -17,10 +17,7 @@ class Vehicle(models.Model):
         blank=True,
         null=True,
         validators=[MinValueValidator(1900)])
-    mileage = models.PositiveIntegerField(
-        default=0,
-        validators=[MaxValueValidator(1000000)]
-    )
+
     color = models.CharField(max_length=30, blank=True)
     owner = models.ForeignKey(
         CustomUser,

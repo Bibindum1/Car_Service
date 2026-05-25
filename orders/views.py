@@ -46,12 +46,14 @@ def service_list(request):
 def service_detail(request, pk):
     service = get_object_or_404(Service, pk=pk)
 
+    user_vehicles = Vehicle.objects.filter(
+        owner=request.user
+    )
+
     if request.method == "POST":
         form = OrderForm(request.POST)
 
-        form.fields["vehicle"].queryset = Vehicle.objects.filter(
-            owner=request.user
-        )
+        form.fields["vehicle"].queryset = user_vehicles
 
         if form.is_valid():
             order = form.save(commit=False)
@@ -67,13 +69,12 @@ def service_detail(request, pk):
     else:
         form = OrderForm()
 
-        form.fields["vehicle"].queryset = Vehicle.objects.filter(
-            owner=request.user
-        )
+        form.fields["vehicle"].queryset = user_vehicles
 
     return render(request, "services/services_detail.html", {
         "service": service,
-        "form": form
+        "form": form,
+        "user_vehicles": user_vehicles,
     })
 
 
@@ -102,6 +103,8 @@ def order_list(request):
 def order_create(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
+
+        form.fields['vehicle'].queryset = Vehicle.objects.filter(owner=request.user)
 
         if form.is_valid():
             order = form.save(commit=False)
