@@ -220,6 +220,52 @@
 
         }
 
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            background: linear-gradient(135deg, #101010, #151515);
+            border: 1px solid #333;
+            border-radius: 18px;
+            color: #ffffff;
+
+            padding: 18px 48px 18px 20px;
+
+            cursor: pointer;
+        }
+
+        .form-group select:hover {
+            border-color: #ff7a00;
+        }
+
+        .form-group select:focus {
+            border-color: #ff7a00;
+            box-shadow: 0 0 0 5px rgba(255, 122, 0, 0.14);
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group select {
+            background-image: linear-gradient(45deg, transparent 50%, #ffffff 50%),
+            linear-gradient(135deg, #ffffff 50%, transparent 50%),
+            linear-gradient(135deg, #101010, #151515);
+            background-position: calc(100% - 24px) 50%,
+            calc(100% - 18px) 50%,
+            0 0;
+            background-size: 6px 6px,
+            6px 6px,
+            100% 100%;
+            background-repeat: no-repeat;
+        }
+
+        .form-group select option {
+            background: #111111;
+            color: #ffffff;
+        }
+
     </style>
 
 </head>
@@ -255,10 +301,12 @@
                 Отзывы
             </a>
 
-            <a href="{% url 'orders:about_list' %}">
-                <i class="fa-solid fa-circle-info"></i>
-                О сервисе
-            </a>
+            {% if request.user.is_authenticated and request.user.can_manage_orders %}
+                <a href="{% url 'orders:calendar' %}">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Календарь записей
+                </a>
+            {% endif %}
 
             <a class="nav-link" href="{% url 'users:logout' %}">
                 <i class="fa-solid fa-right-from-bracket"></i>

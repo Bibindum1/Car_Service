@@ -84,6 +84,9 @@
                     <label>{{ field.label }}</label>
                     {{ field }}
                     {{ field.errors }}
+                {{ form.username.errors }}
+                {{ form.email.errors }}
+                {{ form.phone.errors }}
                 </div>
             {% endfor %}
 

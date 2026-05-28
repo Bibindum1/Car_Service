@@ -1,203 +1,295 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Главная
+    О сервисе
 {% endblock %}
 
 {% block content %}
 
 <style>
+    .about-page {
+        padding: 45px 20px 70px;
+    }
 
-.hero{
-    height:550px;
+    .about-hero {
+        position: relative;
+        min-height: 560px;
+        border-radius: 36px;
+        overflow: hidden;
+        border: 1px solid #262626;
+        background:
+            linear-gradient(90deg, rgba(0,0,0,0.92), rgba(0,0,0,0.65), rgba(0,0,0,0.25)),
+            url("https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=1800") center/cover;
+        box-shadow: 0 28px 70px rgba(0,0,0,0.55);
+    }
 
-    border-radius:36px;
+    .about-hero-content {
+        max-width: 780px;
+        padding: 70px 55px;
+    }
 
-    padding:70px;
+    .about-label {
+        display: inline-block;
+        margin-bottom: 22px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(255, 122, 0, 0.14);
+        border: 1px solid rgba(255, 122, 0, 0.38);
+        color: #ff8a1f;
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-    display:flex;
-    align-items:center;
+    .about-hero h1 {
+        margin: 0 0 24px;
+        font-size: 68px;
+        line-height: 1.05;
+        color: #fff;
+        text-shadow: 4px 4px 0 #ff6a00;
+    }
 
-    margin-bottom:40px;
+    .about-hero p {
+        max-width: 680px;
+        color: #d0d0d0;
+        font-size: 18px;
+        line-height: 1.8;
+        margin-bottom: 18px;
+    }
 
-    background:
-            linear-gradient(
-                    rgba(0,0,0,.75),
-                    rgba(0,0,0,.75)
-            ),
+    .about-actions {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 34px;
+    }
 
-            url('https://images.unsplash.com/photo-1487754180451-c456f719a1fc?q=80&w=1800');
+    .about-btn {
+        display: inline-block;
+        padding: 16px 24px;
+        border-radius: 16px;
+        text-decoration: none;
+        font-weight: 800;
+        color: white;
+        transition: 0.25s;
+    }
 
-    background-size:cover;
-    background-position:center;
-}
+    .about-btn-primary {
+        background: linear-gradient(135deg, #ff7a00, #ff4d00);
+        box-shadow: 0 14px 35px rgba(255,102,0,0.25);
+    }
 
-.hero h1{
-    font-size:82px;
-    font-weight:900;
-    line-height:1;
-    margin-bottom:25px;
-}
+    .about-btn-secondary {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid #333;
+    }
 
-.hero p{
-    font-size:22px;
-    color:#c7c7c7;
-    margin-bottom:35px;
-}
+    .about-btn:hover {
+        transform: translateY(-3px);
+    }
 
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
+    .about-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-top: 28px;
+    }
 
-    margin-bottom:45px;
-}
+    .stat-card {
+        background: linear-gradient(145deg, #171717, #101010);
+        border: 1px solid #282828;
+        border-radius: 24px;
+        padding: 26px;
+    }
 
-.stat{
-    background:#121212;
-    border-radius:26px;
-    padding:30px;
-    border:1px solid #222;
-}
+    .stat-card strong {
+        display: block;
+        color: #ff7a00;
+        font-size: 34px;
+        margin-bottom: 8px;
+    }
 
-.stat h2{
-    font-size:52px;
-    margin-top:10px;
-    color:#ff6600;
-}
+    .stat-card span {
+        color: #bdbdbd;
+        font-size: 15px;
+    }
 
-.service-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:25px;
-}
+    .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        margin-top: 28px;
+    }
 
-.service-card{
-    background:#121212;
-    border-radius:28px;
-    overflow:hidden;
-    border:1px solid #222;
-    transition:.35s;
-}
+    .feature {
+        background: linear-gradient(145deg, #171717, #101010);
+        border: 1px solid #282828;
+        border-radius: 26px;
+        padding: 30px;
+        transition: 0.25s;
+    }
 
-.service-card:hover{
-    transform:translateY(-8px);
-    border-color:#ff6600;
-}
+    .feature:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255,122,0,0.45);
+        box-shadow: 0 18px 40px rgba(255,102,0,0.12);
+    }
 
-.service-card img{
-    width:100%;
-    height:240px;
-    object-fit:cover;
-}
+    .feature-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,122,0,0.12);
+        color: #ff7a00;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
 
-.service-content{
-    padding:25px;
-}
+    .feature h3 {
+        color: #fff;
+        font-size: 21px;
+        margin-bottom: 12px;
+    }
 
-.service-content h2{
-    margin-bottom:15px;
-}
+    .feature p {
+        color: #aaa;
+        line-height: 1.7;
+        font-size: 15px;
+    }
 
-.service-content p{
-    color:#b0b0b0;
-    line-height:1.7;
-}
+    @media(max-width: 900px) {
+        .about-hero-content {
+            padding: 45px 30px;
+        }
 
-.price{
-    margin-top:20px;
-    color:#ff6600;
-    font-size:32px;
-    font-weight:900;
-}
+        .about-hero h1 {
+            font-size: 46px;
+        }
 
+        .about-stats,
+        .features {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media(max-width: 600px) {
+        .about-page {
+            padding: 25px 14px;
+        }
+
+        .about-hero {
+            min-height: auto;
+        }
+
+        .about-hero h1 {
+            font-size: 36px;
+        }
+
+        .about-hero p {
+            font-size: 15px;
+        }
+
+        .about-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
 </style>
 
-<section class="hero">
+<div class="about-page">
 
-    <div>
+    <section class="about-hero">
 
-        <h1>
-            GARAGE<br>
-            CORE
-        </h1>
+        <div class="about-hero-content">
 
-        <p>
-            Профессиональный ремонт, диагностика<br>
-            и обслуживание автомобилей
-        </p>
+            <div class="about-label">
+                Premium Auto Service
+            </div>
 
-        <a href="{% url 'orders:order_create' %}" class="btn">
-            Записаться сейчас
-        </a>
+            <h1>
+                GarageCore Service
+            </h1>
 
-    </div>
+            <p>
+                Современный автосервис для диагностики, ремонта и обслуживания автомобилей.
+                Мы делаем обслуживание понятным, быстрым и удобным для каждого клиента.
+            </p>
 
-</section>
+            <p>
+                Используем профессиональное оборудование, фиксируем историю обращений
+                и помогаем владельцам следить за состоянием автомобиля.
+            </p>
 
-<div class="stats">
+            <div class="about-actions">
+                <a href="{% url 'orders:order_create' %}" class="about-btn about-btn-primary">
+                    Создать заявку
+                </a>
 
-    <div class="stat">
-        <p>Заказов</p>
-        <h2>240+</h2>
-    </div>
+                <a href="#features" class="about-btn about-btn-secondary">
+                    Подробнее
+                </a>
+            </div>
 
-    <div class="stat">
-        <p>Клиентов</p>
-        <h2>110+</h2>
-    </div>
-
-    <div class="stat">
-        <p>Авто</p>
-        <h2>86</h2>
-    </div>
-
-    <div class="stat">
-        <p>Опыт</p>
-        <h2>12Y</h2>
-    </div>
-
-</div>
-
-<h1 class="section-title">
-    Популярные услуги
-</h1>
-
-<div class="service-grid">
-
-{% for service in services %}
-
-<div class="service-card">
-
-    {% if service.image %}
-    <img src="{{ service.image.url }}">
-    {% endif %}
-
-    <div class="service-content">
-
-        <h2>
-            {{ service.title }}
-        </h2>
-
-        <p>
-            {{ service.description|truncatewords:18 }}
-        </p>
-
-        <div class="price">
-            {{ service.initial_price }}₽
         </div>
 
-        <br>
+    </section>
 
-        <a href="{% url 'orders:service_detail' service.pk %}" class="btn">
-            Подробнее
-        </a>
+    <div class="about-stats">
+
+        <div class="stat-card">
+            <strong>24/7</strong>
+            <span>Удобная подача заявки онлайн</span>
+        </div>
+
+        <div class="stat-card">
+            <strong>3+</strong>
+            <span>Основных направления обслуживания</span>
+        </div>
+
+        <div class="stat-card">
+            <strong>100%</strong>
+            <span>Контроль статуса заказа</span>
+        </div>
 
     </div>
 
-</div>
+    <div class="features" id="features">
 
-{% endfor %}
+        <div class="feature">
+            <div class="feature-icon">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+            <h3>Профессиональный ремонт</h3>
+            <p>
+                Выполняем диагностику, ремонт и обслуживание с подробным описанием проблемы.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">
+                <i class="fa-solid fa-car"></i>
+            </div>
+            <h3>Учет автомобилей</h3>
+            <p>
+                Клиент может добавлять автомобили и создавать заявки по конкретной машине.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">
+                <i class="fa-solid fa-gauge-high"></i>
+            </div>
+            <h3>Быстрое обслуживание</h3>
+            <p>
+                Заявки распределяются по статусам, мастерам и времени записи.
+            </p>
+        </div>
+
+    </div>
 
 </div>
 

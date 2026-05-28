@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Управление заказом{% endblock %}
+{% block content %}
+    <style>.panel {
+        background: #111;
+        border: 1px solid #222;
+        border-radius: 28px;
+        padding: 32px;
+        max-width: 950px
+    }
+
+    .muted {
+        color: #aaa
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns:1fr 1fr;
+        gap: 22px
+    }
+
+    .full {
+        grid-column: 1/-1
+    }
+
+    .form-control {
+        width: 100%;
+        background: #0c0c0c;
+        border: 1px solid #2a2a2a;
+        border-radius: 16px;
+        padding: 14px 16px;
+        color: white
+    }
+
+    .submit {
+        background: #ff6600;
+        color: white;
+        border: 0;
+        border-radius: 16px;
+        padding: 16px 24px;
+        font-weight: 700;
+        margin-top: 20px
+    }
+
+    .info {
+        margin-bottom: 25px;
+        line-height: 1.8
+    }
+
+    @media (max-width: 800px) {
+        .grid {
+            grid-template-columns:1fr
+        }
+    }</style>
+    <div class="panel"><h1>Управление заказом #{{ order.order_id }}</h1>
+        <div class="info muted">
+            <div>Клиент: {{ order.name }} — {{ order.phone }}</div>
+            <div>Автомобиль: {{ order.vehicle }}</div>
+            <div>Услуга: {{ order.service|default:'Не выбрана' }}</div>
+            <div>Описание: {{ order.description }}</div>
+        </div>
+        <form method="post">{% csrf_token %}
+            <div class="grid">{% for field in form %}
+                <div class="{% if field.name == 'master_comment' %}full{% endif %}">
+                    <label>{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}</div>
+            <button class="submit" type="submit">Сохранить изменения</button>
+        </form>
+    </div>
+{% endblock %}
