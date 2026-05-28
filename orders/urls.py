@@ -15,3 +15,4 @@ urlpatterns = [
     path("about/", views.about_list, name="about_list"),
     path("reviews/", views.reviews, name="reviews"),
 ]
+#test
