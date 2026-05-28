@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 import re
 
-
+from orders.management.commands.seed_orders import User
 from .models import CustomUser
 
 

@@ -11,6 +11,8 @@ class OrderAdmin(admin.ModelAdmin):
         "client_name",
         "vehicle_info",
         "service_info",
+        "appointment_at",
+        "master",
         "colored_status",
         "created_at",
     )
@@ -23,6 +25,8 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = (
         "status",
         "created_at",
+        "appointment_at",
+        "master",
         "vehicle__brand",
     )
 
@@ -67,6 +71,9 @@ class OrderAdmin(admin.ModelAdmin):
                 "service",
                 "description",
                 "status",
+                "appointment_at",
+                "master",
+                "master_comment",
             )
         }),
 
@@ -83,6 +90,7 @@ class OrderAdmin(admin.ModelAdmin):
         "user",
         "vehicle",
         "service",
+        "master",
     )
 
     actions = [
@@ -178,26 +186,11 @@ class ServiceAdmin(admin.ModelAdmin):
     readonly_fields = ()
 
     fieldsets = (
-
         ("Основная информация", {
             "fields": (
-            )
-        }),
-
-        ("Описание", {
-            "fields": (
+                "title",
                 "description",
-            )
-        }),
-
-        ("Цена", {
-            "fields": (
                 "initial_price",
-            )
-        }),
-
-        ("Изображение", {
-            "fields": (
                 "image",
             )
         }),
