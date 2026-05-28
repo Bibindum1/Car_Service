@@ -2,8 +2,9 @@
 __pycache__/
 *.py[codz]
 *$py.class
-
+media
 # C extensions
+#test
 *.so
 
 # Distribution / packaging
