@@ -11,8 +11,7 @@
         .services-grid {
             display: grid;
 
-            /* Было auto-fit, из-за этого иногда 4 карточки */
-            grid-template-columns:repeat(3, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
 
             gap: 25px;
         }

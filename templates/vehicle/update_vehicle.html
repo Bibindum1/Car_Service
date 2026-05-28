@@ -6,6 +6,49 @@
 
 {% block content %}
 
-{% include 'vehicle/create_vehicle.html' %}
+<style>
+.form-box{
+    background:#121212;
+    border-radius:34px;
+    padding:45px;
+    border:1px solid #222;
+    max-width:800px;
+}
+.form-group{ margin-bottom:24px; }
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:18px;
+    background:#1b1b1b;
+    border:1px solid #2a2a2a;
+    border-radius:16px;
+    color:white;
+}
+.errorlist{
+    margin-top:10px;
+    color:#ff5c5c;
+    list-style:none;
+}
+</style>
+
+<div class="form-box">
+    <h1 class="section-title">Редактировать автомобиль</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+
+        <button class="btn" type="submit">Сохранить</button>
+        <a class="btn1" href="{% url 'vehicle:vehicle_detail' form.instance.pk %}">Отмена</a>
+    </form>
+</div>
 
 {% endblock %}

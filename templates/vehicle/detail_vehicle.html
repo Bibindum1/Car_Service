@@ -1,113 +1,203 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Автомобиль
+    Автомобиль
 {% endblock %}
 
 {% block content %}
 
 <style>
-
-.detail-layout{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:30px;
-}
-
-.detail-card,
-.history-card{
-    background:#121212;
-    border-radius:32px;
-    padding:35px;
-    border:1px solid #222;
-}
-
-.detail-image{
-    width:100%;
-    height:420px;
-    object-fit:cover;
-    border-radius:22px;
-    margin-bottom:30px;
-}
-
-.detail-row{
-    display:flex;
-    justify-content:space-between;
-    padding:18px 0;
-    border-bottom:1px solid #222;
-}
-
-.history-item{
-    background:#1b1b1b;
-    border-left:4px solid #ff6600;
-    padding:18px;
-    border-radius:14px;
-    margin-bottom:16px;
-}
-
-@media(max-width:1100px){
-
-    .detail-layout{
-        grid-template-columns:1fr;
+    .vehicle-detail-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 50px 20px;
     }
 
-}
+    .vehicle-detail-card {
+        width: 100%;
+        max-width: 950px;
+        background: linear-gradient(145deg, #151515, #0f0f0f);
+        border: 1px solid #252525;
+        border-radius: 32px;
+        padding: 45px;
+        box-shadow: 0 20px 55px rgba(0, 0, 0, 0.45);
+    }
 
+    .vehicle-detail-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 25px;
+        align-items: flex-start;
+        margin-bottom: 35px;
+    }
+
+    .vehicle-detail-title h1 {
+        font-size: 52px;
+        line-height: 1.1;
+        margin: 0 0 10px;
+        color: #fff;
+    }
+
+    .vehicle-detail-title p {
+        color: #aaa;
+        font-size: 16px;
+    }
+
+    .vehicle-badge {
+        padding: 14px 22px;
+        border-radius: 18px;
+        background: rgba(255, 102, 0, 0.12);
+        border: 1px solid rgba(255, 102, 0, 0.35);
+        color: #ff7a00;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .vehicle-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .vehicle-info-item {
+        background: #1b1b1b;
+        border: 1px solid #2b2b2b;
+        border-radius: 20px;
+        padding: 22px;
+    }
+
+    .vehicle-info-item span {
+        display: block;
+        margin-bottom: 10px;
+        color: #9f9f9f;
+        font-size: 14px;
+    }
+
+    .vehicle-info-item strong {
+        display: block;
+        color: #fff;
+        font-size: 19px;
+        word-break: break-word;
+    }
+
+    .vehicle-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 35px;
+        flex-wrap: wrap;
+    }
+
+    .vehicle-btn {
+        display: inline-block;
+        padding: 15px 24px;
+        border-radius: 16px;
+        text-decoration: none;
+        color: #fff;
+        font-weight: 700;
+        transition: 0.25s;
+    }
+
+    .vehicle-btn-primary {
+        background: linear-gradient(135deg, #ff7a00, #ff4d00);
+    }
+
+    .vehicle-btn-secondary {
+        background: #202020;
+        border: 1px solid #333;
+    }
+
+    .vehicle-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(255, 102, 0, 0.25);
+    }
+
+    @media (max-width: 700px) {
+        .vehicle-detail-card {
+            padding: 28px 22px;
+        }
+
+        .vehicle-detail-header {
+            flex-direction: column;
+        }
+
+        .vehicle-detail-title h1 {
+            font-size: 36px;
+        }
+
+        .vehicle-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .vehicle-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
 </style>
 
-<div class="detail-layout">
+<div class="vehicle-detail-wrapper">
 
-<div class="detail-card">
+    <div class="vehicle-detail-card">
 
-    <img class="detail-image"
-         src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1800">
+        <div class="vehicle-detail-header">
 
-    <h1 class="section-title">
-        {{ vehicle.brand }} {{ vehicle.model }}
-    </h1>
+            <div class="vehicle-detail-title">
+                <h1>{{ vehicle.brand }} {{ vehicle.model }}</h1>
+                <p>Информация об автомобиле клиента</p>
+            </div>
 
-    <div class="detail-row">
-        <span>VIN</span>
-        <strong>{{ vehicle.vin }}</strong>
+            <div class="vehicle-badge">
+                {{ vehicle.year }}
+            </div>
+
+        </div>
+
+        <div class="vehicle-info-grid">
+
+            <div class="vehicle-info-item">
+                <span>VIN номер</span>
+                <strong>{{ vehicle.vin }}</strong>
+            </div>
+
+            <div class="vehicle-info-item">
+                <span>Госномер</span>
+                <strong>{{ vehicle.plate_number }}</strong>
+            </div>
+
+            <div class="vehicle-info-item">
+                <span>Марка</span>
+                <strong>{{ vehicle.brand }}</strong>
+            </div>
+
+            <div class="vehicle-info-item">
+                <span>Модель</span>
+                <strong>{{ vehicle.model }}</strong>
+            </div>
+
+            <div class="vehicle-info-item">
+                <span>Год выпуска</span>
+                <strong>{{ vehicle.year }}</strong>
+            </div>
+
+            <div class="vehicle-info-item">
+                <span>Цвет</span>
+                <strong>{{ vehicle.color }}</strong>
+            </div>
+
+        </div>
+
+        <div class="vehicle-actions">
+            <a href="{% url 'orders:order_create' %}" class="vehicle-btn vehicle-btn-primary">
+                Создать заявку
+            </a>
+
+            <a href="javascript:history.back()" class="vehicle-btn vehicle-btn-secondary">
+                Назад
+            </a>
+        </div>
+
     </div>
-
-    <div class="detail-row">
-        <span>Номер</span>
-        <strong>{{ vehicle.plate_number }}</strong>
-    </div>
-
-    <div class="detail-row">
-        <span>Год</span>
-        <strong>{{ vehicle.year }}</strong>
-    </div>
-
-
-    <div class="detail-row">
-        <span>Цвет</span>
-        <strong>{{ vehicle.color }}</strong>
-    </div>
-
-</div>
-
-<div class="history-card">
-
-    <h2 style="margin-bottom:25px;">
-        История ремонта
-    </h2>
-
-    <div class="history-item">
-        Замена масла и фильтров
-    </div>
-
-    <div class="history-item">
-        Диагностика двигателя
-    </div>
-
-    <div class="history-item">
-        Замена тормозных колодок
-    </div>
-
-</div>
 
 </div>
 
