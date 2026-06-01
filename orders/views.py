@@ -1,10 +1,16 @@
 from collections import OrderedDict
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Count, Q
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import render, redirect
+
+from django.db import transaction
 
 from .forms import OrderForm, OrderManageForm
 from .models import Order, Service
@@ -87,21 +93,33 @@ def order_list(request):
 
     return render(request, "orders/orders.html", {"orders": orders, "search_query": search_query, "status": status, "status_choices": Order.STATUS_CHOICES})
 
-
 @login_required
 def order_create(request):
+    form = OrderForm(user=request.user)
+
     if request.method == "POST":
         form = OrderForm(request.POST, user=request.user)
         if form.is_valid():
             order = form.save(commit=False)
             order.user = request.user
             order.save()
+
+            def send_order_email():
+                if request.user.email:
+                    send_mail(
+                        subject=f"Заказ №{order.pk} успешно создан",
+                        message=f"Ваш заказ №{order.pk} успешно создан.",
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[request.user.email],
+                        fail_silently=False,
+                    )
+
+            transaction.on_commit(send_order_email)
+
             messages.success(request, "Заказ создан.")
             return redirect("orders:order_list")
-    else:
-        form = OrderForm(user=request.user)
 
-    return render(request, "orders/order_form.html", {"form": form, "title": "Создание заказа", "button_text": "Создать заказ"})
+    return render(request, "orders/order_form.html", {"form": form})
 
 
 @login_required
